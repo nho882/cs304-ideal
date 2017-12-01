@@ -13,7 +13,12 @@ create table account(
 ENGINE = InnoDB;
 
 create table identities(
-	identity varchar(20),
+	identity ENUM("East Asian", "Southeast Asian", "Cis-woman",
+		"Cis-man", "Non-binary","Genderfluid", "Trans", "Trans-Woman", "Trans-Man",
+		"White", "Black", "Latinx", "South Asian", "Pacific Islander", "Low income",
+		"First Generation College Student", "Immigrant", "Disabled", "Able-bodied", "Undocumented",
+		"Fat", "Indigenous", "Gay", "Heterosexual", "Lesbian", "Bisexual", "Queer",
+		"Asexual", "Aromantic", "Multi-racial",""),
 	accountName varchar(20) not null,
 	primary key (identity, accountName),
 	foreign key (accountName) references account(accountName) on delete restrict
@@ -25,7 +30,7 @@ create table reviews (
 	reviewID int not null AUTO_INCREMENT,
 	accountName varchar(20),
 	reviewText LONGBLOB not null,
-	sentiment boolean not null,
+	sentiment ENUM("Positive", "Negative", "Neutral") not null,
 	salary int unsigned,
 	primary key (reviewID),
 	foreign key (accountName) references account(accountName) on delete restrict
