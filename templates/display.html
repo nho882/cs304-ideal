@@ -1,7 +1,7 @@
 {% extends 'index.html' %}
 {% block content %}
     <div class="jumbotron">
-        <h1 class="display-3"> Search by Title  </h1>
+        <h4 class="display-3"> Search by Title  </h4>
     </div>
 
  {% with messages = get_flashed_messages() %}
@@ -15,6 +15,6 @@
   {% endwith %}
   
   {% for review in info %} 
-  review
-  {% end for %}
+  {{review}}
+  {% endfor %}
 {% endblock %}
