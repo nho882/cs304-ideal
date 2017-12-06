@@ -6,4 +6,8 @@ insert into identities values ("Southeast Asian", "petramanudom");
 insert into identities values ("Cis-woman", "nancyho");
 insert into identities values ("Non-binary", "petramanudom");
 
-insert into reviews values ("nancyho", "Very large corporate company, Majority white company, deals with diversity issues similar to many other corporate companies", );
+insert into reviews values ("nancyho", "Very large corporate company, Majority white company, deals with diversity issues similar to many other corporate companies", "Neutral", 70000);
+
+insert into companies values ("Capital LLC");
+
+insert into terms values ("corporate", 1);
