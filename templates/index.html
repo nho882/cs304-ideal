@@ -1,10 +1,24 @@
 
 <!DOCTYPE html>
 <head> 
-  <title> IDeal: Working with Transparency
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+  <title> IDeal: Working with Transparency</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
 </head>
 <body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="{{url_for('index.html')}}">Ideal</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-item nav-link" href="{{url_for('about.html')}}"">About <span class="sr-only">(current)</span></a>
+      <a class="nav-item nav-link" href="{{url_for('contact.html')}}">Contact</a>
+    </div>
+    <a class="btn btn-outline-secondary ml-auto" href="{{url_for('sign_on.html')}}" role="button">Log In</a>
+  </div>
+</nav>
+
 <style>
 .jumbotron {
 height:100vh;
@@ -12,8 +26,8 @@ margin-bottom: -500px;
 z-index: -1;
 }
 </style>
+
 <div class="jumbotron">
-  {% block content %}
 
   <center><h1 class='display-3'>Ideal</h1></center>
   {% block content %}
@@ -44,7 +58,6 @@ z-index: -1;
   {% endif %}
   {% endwith %} 
   </h3>
-{% endblock %}
 </div>
 <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
