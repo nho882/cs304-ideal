@@ -1,4 +1,4 @@
-use nho_db;
+use weddit_db;
 drop table if exists terms;
 drop table if exists companies;
 drop table if exists reviews;
