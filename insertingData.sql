@@ -8,6 +8,6 @@ insert into identities values ("Non-binary", "petramanudom");
 
 insert into reviews values (null, "nancyho", "Very large corporate company, Majority white company, deals with diversity issues similar to many other corporate companies", "Neutral", 70000);
 
-insert into companies values ("Capital LLC");
+insert into companies values ("Capital LLC", null);
 
-insert into terms values ("corporate", 1);
+insert into terms values ("corporate", null);
