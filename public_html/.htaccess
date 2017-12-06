@@ -1,0 +1,18 @@
+# begin file .htaccess
+AuthUserFile /var/www/htpasswd
+AuthGroupFile /dev/null
+AuthName "By Invitation Only"
+AuthType Basic
+
+order deny,allow
+deny from all
+allow from .wellesley.edu
+allow from 149.130.
+# the X-FORWARDED-FOR header is set by varnish
+# so this pattern will let us use .htaccess with varnish
+SetEnvIf X-FORWARDED-FOR "^149.130." OkIP 
+SetEnvIf X-FORWARDED-FOR "^128.30.52" OkIP  # w3.org
+allow from env=OkIP
+require valid-user 
+satisfy any
+# end file .htaccess

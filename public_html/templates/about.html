@@ -1,0 +1,16 @@
+{% extends 'index.html' %}
+{% block content %}
+    <div class="jumbotron">
+        <h1 class="display-3"> About  </h1>
+    </div>
+ {% with messages = get_flashed_messages() %}
+  {% if messages %}
+      <div id="messages">
+      {% for msg in messages %}
+          <p>{{msg}}</p>
+      {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+    ABOUT INFO HERE
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'index.html' %}
+{% block content %}
+    <div class="jumbotron">
+        <h1 class="display-3"> Contact  </h1>
+    </div>
+ {% with messages = get_flashed_messages() %}
+  {% if messages %}
+      <div id="messages">
+      {% for msg in messages %}
+          <p>{{msg}}</p>
+      {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+    CONTACT INFO HERE
+    <a class="btn btn-outline-secondary ml-auto" href="{{url_for('sign_on.html')}}" role="button">Upload File</a>
+{% endblock %}
