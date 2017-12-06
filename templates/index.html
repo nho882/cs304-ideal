@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<head> 
+  <title> IDeal: Working with Transparency
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+</head>
+<body>
+<style>
+.jumbotron {
+height:100vh;
+margin-bottom: -500px;
+z-index: -1;
+}
+</style>
+<div class="jumbotron">
+  {% block content %}
+
+  <center><h1 class='display-3'>Ideal</h1></center>
+  {% block content %}
+  <div id="content">
+    <form method="POST" action="{{script}}">
+        <div class="form-group">
+                        <label for='actornm'> Search by Company Name</label> <input type="text" class="form-control" name="searchCompany" aria-describedby="textbox"
+                        placeholder="Ex. Google">
+                        <label for='actorname'> Search by Identity </label><input type="text" class="form-control" name="searchIdentity" aria-describedby="textbox"
+                        placeholder="Ex. Southeast Asian">
+                        <label for='actorbirthday'> Search by Tags </label><input type="text" class="form-control" name="searchTags" aria-describedby="textbox"
+                        placeholder="Ex. Racist">
+                    <p><div style="margin: auto;">
+                        <button type="submit" class="btn btn-primary btn-block" >Go!</button>
+                    </div></p>
+    </form>
+</div>
+  {% endblock %}
+
+  <h3>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+      <div id="messages">
+      {% for msg in messages %}
+          <p>{{msg}}</p>
+      {% endfor %}
+      </div>
+  {% endif %}
+  {% endwith %} 
+  </h3>
+{% endblock %}
+</div>
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+</body>
