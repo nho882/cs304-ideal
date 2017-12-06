@@ -18,7 +18,7 @@ create table identities(
 		"White", "Black", "Latinx", "South Asian", "Pacific Islander", "Low income",
 		"First Generation College Student", "Immigrant", "Disabled", "Able-bodied", "Undocumented",
 		"Fat", "Indigenous", "Gay", "Heterosexual", "Lesbian", "Bisexual", "Queer",
-		"Asexual", "Aromantic", "Multi-racial",""),
+		"Asexual", "Aromantic", "Multi-racial"),
 	accountName varchar(20) not null,
 	primary key (identity, accountName),
 	foreign key (accountName) references account(accountName) on delete restrict
