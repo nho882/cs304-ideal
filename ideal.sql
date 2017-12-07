@@ -7,7 +7,8 @@ drop table if exists account;
 
 create table account (
 	accountName varchar(20) primary key,
-	position varchar(20)
+	password varchar(20) not null,
+	jobTitle varchar(20)
 	)
 
 ENGINE = InnoDB;
