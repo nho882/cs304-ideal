@@ -1,23 +1,9 @@
 {% extends 'index.html' %}
 {% block content %}
-        <center>
-          <h4 class="display-3"> Search by Company </h4>
-        </center>
-
- {% with messages = get_flashed_messages() %}
-  {% if messages %}
-      <div id="messages">
-      {% for msg in messages %}
-          <p>{{msg}}</p>
-      {% endfor %}
-      </div>
-    {% endif %}
-  {% endwith %}
   <div class="container">
     <h1> Company: {{company}} </h1>
   {% for review in info %} 
     <div class="container">
-<!--         <h2>  {{review}} </h2> -->
         <p> Account: {{review['accountName']}} </p>
         <p> Review: {{review['reviewText']}} </p>
         <p> Sentiment: {{review['sentiment']}}</p>
