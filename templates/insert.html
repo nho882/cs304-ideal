@@ -1,0 +1,40 @@
+{% extends 'index.html' %}
+{% block content %}
+    <div class="jumbotron">
+        <h4 class="display-3"> Add a Review  </h4>
+    </div>
+
+  <div id="content">
+    <form method="POST" action="{{script}}">
+        <div class="form-group">
+                        <label for='accountName'> Your username:</label> <input type="text" class="form-control" name="searchCompany" aria-describedby="textbox"
+                        placeholder="Ex. my_account_name">
+                        <label for='companyName'> Company Name: </label><input type="text" class="form-control" name="searchTags" aria-describedby="textbox"
+                        placeholder="Ex. Facebook">
+                        <label for='review'> Review: </label><input type="text" class="form-control" name="searchIdentity" aria-describedby="textbox"
+                        placeholder="Ex. My experience at this company was ...">
+                        <label for='sentiment'> Choose a sentiment </label><input type="text" class="form-control" name="searchTags" aria-describedby="textbox"
+                        placeholder="Ex. Racist">
+                        <label for='salary'> Enter your salary: </label><input type="text" class="form-control" name="searchTags" aria-describedby="textbox"
+                        placeholder="Ex. Racist">
+                        <label for='identity'> Select your identities: </label><input type="text" class="form-control" name="searchTags" aria-describedby="textbox"
+                        placeholder="Ex. Racist">
+                        <label for='identity'> Enter Tags </label><input type="text" class="form-control" name="searchTags" aria-describedby="textbox"
+                        placeholder="Ex: racist, fun, rewarding">
+                    <p><div style="margin: auto;">
+                        <button type="submit" class="btn btn-primary btn-block" >Go!</button>
+                    </div></p>
+    </form>
+</div>
+  
+
+{% endblock %}
+
+<!-- 
+| reviewID    | int(11)                               | NO   | PRI | NULL    | auto_increment |
+| accountName | varchar(20)                           | YES  | MUL | NULL    |                |
+| reviewText  | longblob                              | NO   |     | NULL    |                |
+| sentiment   | enum('Positive','Negative','Neutral') | NO   |     | NULL    |                |
+| salary      | int(10) unsigned                      | YES  |     | NULL    |                |
+| companyName | varchar(20)                           | YES  | MUL | NULL    |                |
+ -->
