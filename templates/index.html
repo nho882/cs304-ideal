@@ -22,15 +22,16 @@
 <style>
 .jumbotron {
 height:100vh;
+width:100vw;
 margin-bottom: -500px;
 z-index: -1;
 }
 </style>
 
 <div class="jumbotron">
-
-  <center><h1 class='display-3'>IDeal</h1></center>
   {% block content %}
+  <center><h1 class='display-3'>IDeal</h1></center>
+  
   <div id="content">
     <form method="POST" action="{{script}}">
         <div class="form-group">
