@@ -52,6 +52,7 @@ def display(company_name=None, terms=None, identity=None):
     rows =getIdentityReviews(identity)
   
   return render_template("display.html", company=company_name, info = rows)
+
   
 @app.route('/insert/', methods=['POST', 'GET'])
 def insert():
@@ -62,30 +63,16 @@ def insert():
     sentiment = request.form['sentiment']
     salary = request.form['salary']
     identities = request.form['identities']
-    insertReview(account, companyName, review, sentiment, salary)
-    flash("Thank you for submitting your review!")
-  
-=======
-  
-@app.route('/insert/', methods=['POST', 'GET'])
-def insert():
-  if request.method == 'POST':
-    account = request.form['accountName']
-    companyName = request.form['companyName']
-    review = request.form['review']
-    sentiment = request.form['sentiment']
-    salary = request.form['salary']
-    identities = request.form['identities']
+    print request.values.getlist('identitiess')
+    print request.values
     insertReview(account, companyName, review, sentiment, salary)
     flash("Thank you for submitting your reivew!")
   
->>>>>>> 748e1f83210106dc8846fbcee85a871fcd96c64a
   identities = getIdentities()[0]['Type']
   identities = re.sub('[(){}<>]', '', identities)
   identities = identities.replace('enum','').replace("'", '').split(',')
   return render_template('insert.html', identities= identities)
 
-<<<<<<< HEAD
 @app.route('/sign_on', methods = ['POST', 'GET'])
 def signon():
   if request.method == 'POST':
@@ -119,8 +106,6 @@ def login(account, password):
   row = curs.fetchone()
   return row
 
-=======
->>>>>>> 748e1f83210106dc8846fbcee85a871fcd96c64a
 def insertReview(account, company, review, sentiment, salary):
   curs = getConn().cursor(MySQLdb.cursors.DictCursor)
   curs.execute("insert into reviews values (Null, %s, %s,%s, %s, %s)", (account, review, sentiment, salary, company))

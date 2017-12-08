@@ -1,6 +1,10 @@
 {% extends 'index.html' %}
 {% block content %}
-        <center><h4 class="display-3"> Add a Review  </h4></center>
+        <center>
+          <div class="jumbotron"><h4 class="display-3"> Add a Review  </h4>
+          <h4> * All fields required. </h4>
+          </div>
+        </center>
     
       <form method="POST" action="{{script}}">
           <div class="form-group">
@@ -10,9 +14,14 @@
                           placeholder="Ex. Facebook">
                           <label for='review'> Review: </label><input type="text" class="form-control" name="review" aria-describedby="textbox"
                           placeholder="Ex. My experience at this company was ...">
-                          <label for='sentiment'> Choose a sentiment </label><input type="text" class="form-control" name="sentiment" aria-describedby="textbox"
-                          placeholder="Ex. Positive">
-                          <label for='salary'> Enter your salary: </label><input type="text" class="form-control" name="salary" aria-describedby="textbox"
+                          <label for="sentiment">Choose a sentiment</label>
+                               <select id="sentiment" name="sentiment">
+                                  <option value=""> ----- </option>
+                                  <option value="Positive"> Positive </option>
+                                  <option value="Negative"> Negative </option>
+                                  <option value="Positive"> Neutral </option>
+                              </select>
+                          <br><label for='salary'> Enter your salary: </label><input type="text" class="form-control" name="salary" aria-describedby="textbox"
                           placeholder="Ex. 70000">
                           Please Select Your Identities
                           <div id="identities-container" class="container">

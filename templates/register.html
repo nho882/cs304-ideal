@@ -1,0 +1,20 @@
+{% extends 'index.html' %}
+{% block content %}
+        <center>
+          <div class="jumbotron"><h4 class="display-3"> Welcome to IDeal! </h4>
+          <h4> * All fields required. </h4>
+          </div>
+        </center>
+    
+      <form method="POST" action="{{script}}">
+          <div class="form-group">
+                          <label for='accountName'> Enter a username:</label> <input type="text"class="form-control" name="accountName" aria-describedby="textbox" placeholder="Ex. my_account_name">
+                          <label for='password'> Enter a password: </label><input type="text" class="form-control" name="password" aria-describedby="textbox" placeholder="Ex. someth1ng_v3ry_s3cur3">
+                          <label for='jobTitle'> Enter a Jobtitle: </label><input type="text" class="form-control" name="jobTitle" aria-describedby="textbox" placeholder="Ex. Software Engineering">
+                          <button type="submit" class="btn btn-primary btn-block" >Register Me!</button>
+                      </div></p>
+      </form>
+
+      <h1> NOTE: WE WILL HAVE PEOPLE UPLOAD THEIR RESUMES HERE. </h1>
+
+{% endblock %}

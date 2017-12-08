@@ -1,7 +1,6 @@
 {% extends 'index.html' %}
 {% block content %}
-  <div class="container">
-    <h1> Company: {{company}} </h1>
+    <div class="jumbotron"><h1> Company: {{company}} </h1></div>
   {% for review in info %} 
     <div class="container">
         <p> Account: {{review['accountName']}} </p>
@@ -11,5 +10,4 @@
     </div>
 
   {% endfor %}
-</div>
 {% endblock %}

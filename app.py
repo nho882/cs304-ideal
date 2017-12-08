@@ -63,6 +63,7 @@ def insert():
     sentiment = request.form['sentiment']
     salary = request.form['salary']
     identities = request.form['identities']
+    print request.form.getlist('identities')
     insertReview(account, companyName, review, sentiment, salary)
     flash("Thank you for submitting your reivew!")
   
