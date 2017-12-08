@@ -63,6 +63,7 @@ def insert():
     sentiment = request.form['sentiment']
     salary = request.form['salary']
     identities = request.form['identities']
+    print request.form.getlist('identities')
     insertReview(account, companyName, review, sentiment, salary)
     flash("Thank you for submitting your reivew!")
   
@@ -94,9 +95,28 @@ def signon():
 
 @app.route('/account/<accountName>', methods = ['POST', 'GET'])
 def displayAccount(accountName):
-  print "hello"
   rows = getAccountInfo(accountName)
   return render_template("account_display.html", accountName = accountName, info = rows)
+
+@app.route('/register', methods = ['POST', 'GET'])
+def register():
+  if request.method == 'POST':
+    account = request.form['accountName']
+    password = request.form['password']
+    jobTitle = request.form['jobTitle']
+
+    if account and password and jobTitle:
+      curs = getConn().cursor(MySQLdb.cursors.DictCursor)
+      curs.execute("select * from account where accountName = %s", (account,))
+      row = curs.fetchall()
+      if row:
+        flash("Account name already exists. Please choose another one.")
+        return render_template('register.html')
+      else:
+        flash("Successfully created account!")
+        curs.execute("insert into account values (%s, %s, %s)", (account, password, jobTitle))
+        return redirect(url_for('displayAccount', accountName = account))
+  return render_template('register.html')
 
 def login(account, password):
   curs = getConn().cursor(MySQLdb.cursors.DictCursor)
