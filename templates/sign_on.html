@@ -1,7 +1,7 @@
 {% extends 'index.html' %}
 {% block content %}
     <div class="jumbotron">
-        <h1 class="display-3"> Search by Title  </h1>
+        <h4 class="display-4"> Please sign in to add a review. </h4>
     </div>
  {% with messages = get_flashed_messages() %}
   {% if messages %}
@@ -13,10 +13,10 @@
     {% endif %}
   {% endwith %}
     <form method=POST action="{{script}}">
-        <label for="username">Username </label>
-        <input name="username" value="">
-        <label for="password">Password </label>
-        <input name="password" value="">
+        <label for="accountName">Username </label>
+        <input name="accountName" value="">
+        <label for="accountPassword">Password </label>
+        <input type = "password" name="accountPassword" value="">
         <input type="submit" name="submit-btn" value="Search">
     </form>
 {% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'index.html' %}
+{% block content %}
+        <center><h4 class="display-3"> Add a Review  </h4></center>
+    
+      <form method="POST" action="{{script}}">
+          <div class="form-group">
+                          <label for='accountName'> Your username:</label> <input type="text"class="form-control" name="accountName" aria-describedby="textbox"
+                          placeholder="Ex. my_account_name">
+                          <label for='companyName'> Company Name: </label><input type="text" class="form-control" name="companyName" aria-describedby="textbox"
+                          placeholder="Ex. Facebook">
+                          <label for='review'> Review: </label><input type="text" class="form-control" name="review" aria-describedby="textbox"
+                          placeholder="Ex. My experience at this company was ...">
+                          <label for='sentiment'> Choose a sentiment </label><input type="text" class="form-control" name="sentiment" aria-describedby="textbox"
+                          placeholder="Ex. Positive">
+                          <label for='salary'> Enter your salary: </label><input type="text" class="form-control" name="salary" aria-describedby="textbox"
+                          placeholder="Ex. 70000">
+                          Please Select Your Identities
+                          <div id="identities-container" class="container">
+                          {% for identity in identities %}
+
+                              <input type="checkbox" name="identities" id="identity" value="{{identity}}">
+                              <label for="{{identity}}">{{identity}}</label>
+                          {% endfor %}
+                          </div>
+                          <label for='terms'> Enter Tags </label><input type="text" class="form-control" name="terms" aria-describedby="textbox"
+                          placeholder="Ex: racist, fun, rewarding">
+                      <p><div style="margin: auto;">
+                          <button type="submit" class="btn btn-primary btn-block" >Go!</button>
+                      </div></p>
+      </form>
+
+{% endblock %}
