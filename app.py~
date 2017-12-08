@@ -42,8 +42,15 @@ def searchBar():
   return render_template('index.html',pageTitle='IDeal')
 
 @app.route('/display/<company_name>', methods=['POST','GET'])
+<<<<<<< HEAD
 def display(company_name=None, terms=None, identity=None):
-  #curs = getConn().cursor(MySQLdb.cursors.DictCursor)
+  # curs = getConn().cursor(MySQLdb.cursors.DictCursor)
+=======
+#@app.route('/display/<term>', methods=['POST','GET'])
+#@app.route('/display/<identity>', methods=['POST','GET'])
+def display(company_name=None, terms=None, identity=None):
+  curs = getConn().cursor(MySQLdb.cursors.DictCursor)
+>>>>>>> 748e1f83210106dc8846fbcee85a871fcd96c64a
   if company_name:
     rows = getCompanyReviews(company_name)
   elif terms:
@@ -52,6 +59,7 @@ def display(company_name=None, terms=None, identity=None):
     rows =getIdentityReviews(identity)
   
   return render_template("display.html", company=company_name, info = rows)
+<<<<<<< HEAD
   
 @app.route('/insert/', methods=['POST', 'GET'])
 def insert():
