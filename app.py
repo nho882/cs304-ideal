@@ -1,4 +1,4 @@
-import os, sys, datetime, MySQLdb, dbconn2
+import os, sys, datetime, MySQLdb, dbconn2, helper 
 from flask import Flask, render_template, request, redirect, url_for, flash
 import re
 app = Flask(__name__)
@@ -45,22 +45,19 @@ def searchBar():
 @app.route('/display-identity/<identity>', methods=['POST','GET'])
 def display_identity(identity):
   print "in the else"
-  rows = getIdentityReviews(identity)
+  rows = helper.getIdentityReviews(identity)
   print rows
   return render_template("display-identity.html", identity=identity, info = rows)
 
 
 @app.route('/display-company/<company_name>', methods=['POST','GET'])
 def display_company(company_name):
-  print "in the if"
-  rows = getCompanyReviews(company_name)
+  rows = helper.getCompanyReviews(company_name)
   return render_template("display.html", company=company_name, info = rows)
 
 @app.route('/display-term/<term>', methods=['POST','GET'])
 def display_term(term):
-  curs = getConn().cursor(MySQLdb.cursors.DictCursor)
-  curs.execute("select * from reviews where reviewID in (select reviewID from terms where term = %s)", (term,))
-  rows = curs.fetchall()
+  rows = helper.getTermReviews(terms)
   return render_template("display-terms.html", term=term, info = rows)
 
 
@@ -74,10 +71,10 @@ def insert():
     salary = request.form['salary']
     identities = request.form['identities']
     print request.form.getlist('identities')
-    insertReview(account, companyName, review, sentiment, salary)
+    helper.insertReview(account, companyName, review, sentiment, salary)
     flash("Thank you for submitting your reivew!")
   
-  identities = getIdentities()[0]['Type']
+  identities = helper.getIdentities()[0]['Type']
   identities = re.sub('[(){}<>]', '', identities)
   identities = identities.replace('enum','').replace("'", '').split(',')
   return render_template('insert.html', identities= identities)
@@ -87,7 +84,7 @@ def signon():
   if request.method == 'POST':
     account = request.form['accountName']
     password = request.form['accountPassword']
-    row = login(account, password)
+    row = helper.login(account, password)
     if row is None:
       flash("Sorry, we do not recognize this username and password.")
       return render_template('sign_on.html')
@@ -105,7 +102,7 @@ def signon():
 
 @app.route('/account/<accountName>', methods = ['POST', 'GET'])
 def displayAccount(accountName):
-  rows = getAccountInfo(accountName)
+  rows = helper.getAccountHelper(accountName)
   return render_template("account_display.html", accountName = accountName, info = rows)
 
 
@@ -136,48 +133,6 @@ def about():
 @app.route('/contact/', methods = ['POST', 'GET'])
 def contact():
   return render_template('contact.html')
-
-def login(account, password):
-  curs = getConn().cursor(MySQLdb.cursors.DictCursor)
-  curs.execute("select * from account where accountName = %s", (account,))
-  row = curs.fetchone()
-  return row
-
-def insertReview(account, company, review, sentiment, salary):
-  curs = getConn().cursor(MySQLdb.cursors.DictCursor)
-  curs.execute("insert into reviews values (Null, %s, %s,%s, %s, %s)", (account, review, sentiment, salary, company))
-
-def getIdentities():
-  curs = getConn().cursor(MySQLdb.cursors.DictCursor)
-  curs.execute("show columns from identities where field = 'identity'")
-  return curs.fetchall()
-
-def getCompanyReviews(company):
-  curs = getConn().cursor(MySQLdb.cursors.DictCursor)
-  curs.execute('select * from reviews where companyName like %s', ('%'+company+'%',))
-  row = curs.fetchall()
-  #formatting 
-  return row 
-
-def getTermReviews(term):
-  curs = getConn().cursor(MySQLdb.cursors.DictCursor)
-  curs.execute('select * from reviews join (select term from terms where name like %s) as currCompany on reviews.reviewID = currCompany.reviewID', ('%'+term+'%',))
-  row = curs.fetchall()
-  #formatting 
-  return row 
-
-def getIdentityReviews(identity):
-  curs = getConn().cursor(MySQLdb.cursors.DictCursor)
-  curs.execute('select * from reviews where accountName in (select accountName from identities where identity = %s)', (identity,))
-  row = curs.fetchall()
-  #formatting 
-  return row 
-
-def getAccountInfo(accountName):
-  curs = getConn().cursor(MySQLdb.cursors.DictCursor)
-  curs.execute('select * from reviews where accountName = %s', (accountName,))
-  row = curs.fetchall()
-  return row
   
 if __name__ == '__main__':
     app.debug = True

@@ -1,6 +1,10 @@
 import os, sys, datetime, MySQLdb, dbconn2
 
-# helper module (that wil be utilized later)
+def getConn():
+  DSN = dbconn2.read_cnf()
+  DSN['db'] = 'weddit_db'     # the database we want to connect to
+  return dbconn2.connect(DSN)
+
 def login(account, password):
   curs = getConn().cursor(MySQLdb.cursors.DictCursor)
   curs.execute("select * from account where accountName = %s", (account,))
@@ -19,22 +23,19 @@ def getIdentities():
 def getCompanyReviews(company):
   curs = getConn().cursor(MySQLdb.cursors.DictCursor)
   curs.execute('select * from reviews where companyName like %s', ('%'+company+'%',))
-  row = curs.fetchall()
-  #formatting 
+  row = curs.fetchall() 
   return row 
-  
+
 def getTermReviews(term):
   curs = getConn().cursor(MySQLdb.cursors.DictCursor)
-  curs.execute('select * from reviews join (select term from terms where name like %s) as currCompany on reviews.reviewID = currCompany.reviewID', ('%'+term+'%',))
+  curs.execute("select * from reviews where reviewID in (select reviewID from terms where term = %s)", (term,))
   row = curs.fetchall()
-  #formatting 
   return row 
 
 def getIdentityReviews(identity):
   curs = getConn().cursor(MySQLdb.cursors.DictCursor)
-  curs.execute('select * from reviews join (select identity from companies where name like %s) as currCompany on reviews.reviewID = currCompany.reviewID', ('%'+identity+'%',))
+  curs.execute('select * from reviews where accountName in (select accountName from identities where identity = %s)', (identity,))
   row = curs.fetchall()
-  #formatting 
   return row 
 
 def getAccountInfo(accountName):
