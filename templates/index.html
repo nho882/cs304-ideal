@@ -29,13 +29,23 @@ width:90vw;
 margin-bottom: -500px;
 z-index: -1;
 }
+.content{
+  text-align: left;
+  padding: 10px;
+  background-color: #868e9696;
+}
+.btn-primary {
+    color: #fff;
+    background-color: #72a5b1;
+    border-color: #72a5b1;
+}
 </style>
 
 <center> <div class="jumbotron-fluid">
   {% block content %}
   <center><h1 class='display-3'>IDeal</h1></center>
   
-  <div id="content">
+  <div class="content">
     <form method="POST" action="{{script}}">
         <div class="form-group">
                         <label for='actornm'> Search by Company Name</label> <input type="text" class="form-control" name="searchCompany" aria-describedby="textbox"
