@@ -23,14 +23,6 @@
                               </select>
                           <br><label for='salary'> Enter your salary: </label><input type="text" class="form-control" name="salary" aria-describedby="textbox"
                           placeholder="Ex. 70000">
-                          Please Select Your Identities
-                          <div id="identities-container" class="container">
-                          {% for identity in identities %}
-
-                              <input type="checkbox" name="identities" id="identity" value="{{identity}}">
-                              <label for="{{identity}}">{{identity}}</label>
-                          {% endfor %}
-                          </div>
                           <label for='terms'> Enter Tags </label><input type="text" class="form-control" name="terms" aria-describedby="textbox"
                           placeholder="Ex: racist, fun, rewarding">
                       <p><div style="margin: auto;">

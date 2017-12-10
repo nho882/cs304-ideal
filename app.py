@@ -8,7 +8,7 @@ app.secret_key = 'nancyhohoho'
 def searchBar():
   if request.method == 'POST': 
     #Assume user is only searching for one of these items for now
-    curs = getConn().cursor(MySQLdb.cursors.DictCursor) # results as Dictionaries
+    curs = helper.getConn().cursor(MySQLdb.cursors.DictCursor) # results as Dictionaries
     company = request.form['searchCompany']
     identity = request.form['searchIdentity']
     tag = request.form['searchTags']
@@ -64,15 +64,9 @@ def insert():
     review = request.form['review']
     sentiment = request.form['sentiment']
     salary = request.form['salary']
-    identities = request.form['identities']
-    print request.form.getlist('identities')
     helper.insertReview(account, companyName, review, sentiment, salary)
     flash("Thank you for submitting your reivew!")
-  
-  identities = helper.getIdentities()[0]['Type']
-  identities = re.sub('[(){}<>]', '', identities)
-  identities = identities.replace('enum','').replace("'", '').split(',')
-  return render_template('insert.html', identities= identities)
+  return render_template('insert.html')
 
 @app.route('/sign_on', methods = ['POST', 'GET'])
 def signon():
@@ -97,7 +91,7 @@ def signon():
 
 @app.route('/account/<accountName>', methods = ['POST', 'GET'])
 def displayAccount(accountName):
-  rows = helper.getAccountHelper(accountName)
+  rows = helper.getAccountInfo(accountName)
   return render_template("account_display.html", accountName = accountName, info = rows)
 
 
@@ -107,9 +101,10 @@ def register():
     account = request.form['accountName']
     password = request.form['password']
     jobTitle = request.form['jobTitle']
+    identities = request.form.getlist('identities')
 
-    if account and password and jobTitle:
-      curs = getConn().cursor(MySQLdb.cursors.DictCursor)
+    if account and password and jobTitle and identities:
+      curs = helper.getConn().cursor(MySQLdb.cursors.DictCursor)
       curs.execute("select * from account where accountName = %s", (account,))
       row = curs.fetchall()
       if row:
@@ -118,8 +113,13 @@ def register():
       else:
         flash("Successfully created account!")
         curs.execute("insert into account values (%s, %s, %s)", (account, password, jobTitle))
+        for identity in identities:
+          curs.execute("insert into identities values(%s, %s)", (identity, account))
         return redirect(url_for('displayAccount', accountName = account))
-  return render_template('register.html')
+  identities = helper.getIdentities()[0]['Type']
+  identities = re.sub('[(){}<>]', '', identities)
+  identities = identities.replace('enum','').replace("'", '').split(',')
+  return render_template('register.html', identities= identities)
 
 @app.route('/about/', methods = ['POST', 'GET'])
 def about():

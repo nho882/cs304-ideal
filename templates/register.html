@@ -11,6 +11,14 @@
                           <label for='accountName'> Enter a username:</label> <input type="text"class="form-control" name="accountName" aria-describedby="textbox" placeholder="Ex. my_account_name">
                           <label for='password'> Enter a password: </label><input type="password" class="form-control" name="password" aria-describedby="textbox" placeholder="Ex. someth1ng_v3ry_s3cur3">
                           <label for='jobTitle'> Enter a Jobtitle: </label><input type="text" class="form-control" name="jobTitle" aria-describedby="textbox" placeholder="Ex. Software Engineering">
+                          Please Select Your Identities
+                          <div id="identities-container" class="container">
+                          {% for identity in identities %}
+
+                              <input type="checkbox" name="identities" id="identity" value="{{identity}}">
+                              <label for="{{identity}}">{{identity}}</label>
+                          {% endfor %}
+                          </div>
                           <button type="submit" class="btn btn-primary btn-block" >Register Me!</button>
                       </div></p>
       </form>
