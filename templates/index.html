@@ -12,12 +12,14 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
-      <a class="nav-item nav-link" href="#"">About <span class="sr-only">(current)</span></a>
+      <a class="nav-item nav-link" href="#">About <span class="sr-only">(current)</span></a>
       <a class="nav-item nav-link" href="#">Contact</a>
       <a class="nav-item nav-link" href="{{url_for('insert')}}">Add a review</a>
     </div>
-    <a class="btn btn-outline-secondary ml-auto" href="{{url_for('register')}}" role="button">Register</a>
     <a class="btn btn-outline-secondary ml-auto" href="{{url_for('signon')}}" role="button">Log In</a>
+      <div class ="pull-right">
+    <a class="btn btn-outline-secondary ml-auto" href="{{url_for('register')}}" role="button">Register</a>
+      </div>
   </div>
 </nav>
 
