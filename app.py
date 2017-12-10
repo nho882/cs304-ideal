@@ -1,5 +1,5 @@
 import os, sys, datetime, MySQLdb, dbconn2, helper 
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, make_response
 import re
 app = Flask(__name__)
 app.secret_key = 'nancyhohoho'
@@ -66,7 +66,15 @@ def insert():
     salary = request.form['salary']
     helper.insertReview(account, companyName, review, sentiment, salary)
     flash("Thank you for submitting your reivew!")
-  return render_template('insert.html')
+    return render_template('insert.html')
+
+  cookie = request.cookies.get('username')
+  if cookie: 
+    return render_template('insert.html', account=cookie)
+  else: 
+    flash("You must be logged in to add a review!")
+    return render_template('insert.html', account="NO ACCOUNT!")
+  
 
 @app.route('/sign_on', methods = ['POST', 'GET'])
 def signon():
@@ -77,11 +85,14 @@ def signon():
     if row is None:
       flash("Sorry, we do not recognize this username and password.")
       return render_template('sign_on.html')
-
     if row['password'] == password:
       flash("Successfully logged in.")
+      resp = make_response(render_template('account_display.html',
+                                           accountName = account))
+      resp.set_cookie('username', request.form['accountName'])
       # return render_template('account_display.html')
-      return redirect(url_for('displayAccount', accountName = account))
+      # return redirect(url_for('displayAccount', accountName = account))
+      return resp
       #Redirect to an account page
     else:
       flash("Sorry, we do not recognize this username and password.")
