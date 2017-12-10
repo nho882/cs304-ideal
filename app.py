@@ -4,11 +4,6 @@ import re
 app = Flask(__name__)
 app.secret_key = 'nancyhohoho'
 
-def getConn():
-  DSN = dbconn2.read_cnf()
-  DSN['db'] = 'weddit_db'     # the database we want to connect to
-  return dbconn2.connect(DSN)
-
 @app.route('/', methods=['POST','GET']) #Renders search page
 def searchBar():
   if request.method == 'POST': 
