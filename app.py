@@ -129,6 +129,14 @@ def register():
         return redirect(url_for('displayAccount', accountName = account))
   return render_template('register.html')
 
+@app.route('/about/', methods = ['POST', 'GET'])
+def about():
+  return render_template('about.html')
+
+@app.route('/contact/', methods = ['POST', 'GET'])
+def contact():
+  return render_template('contact.html')
+
 def login(account, password):
   curs = getConn().cursor(MySQLdb.cursors.DictCursor)
   curs.execute("select * from account where accountName = %s", (account,))
