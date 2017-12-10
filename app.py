@@ -18,42 +18,52 @@ def searchBar():
     identity = request.form['searchIdentity']
     tag = request.form['searchTags']
     
-    if company!="": #if nonempty, then fetch row from database
+    if company: #if nonempty, then fetch row from database
       curs.execute('select companyName from companies where companyName like %s', ('%'+company+'%',))
       row = curs.fetchone()
       print row
       if row is not None: #Returns redirect if nonempty
-      	return redirect(url_for('display', company_name = row['companyName']))
+      	return redirect(url_for('display_company', company_name = row['companyName']))
       flash("Sorry, reviews for this company do not yet exist in IDeal.") #Flashes error if no such title
     #flash ("Please enter a search term in category.") #Flashes error if empty search
-    elif identity !="":
-      curs.execute('select identity from identities where identity = %s', ('%'+identity+'%',))
+    elif identity:
+      print identity
+      curs.execute('select identity from identities where identity like %s', ('%'+identity+'%',))
       row = curs.fetchone()
       if row is not None:
-        return redirect(url_for('display', identity = row['identity']))
+        return redirect(url_for('display_identity', identity=row['identity']))
       flash("Sorry, reviews for this identity do not yet exist in IDeal.")
     else:
-      curs.execute('select term from terms where term = %s', ('%'+tag+'%',))
+      curs.execute('select term from terms where term like %s', ('%'+tag+'%',))
       row = curs.fetchone()
       if row is not None:
-        return redirect(url_for('display', terms = row['term']))
+        return redirect(url_for('display_term', term = row['term']))
       flash("Sorry, reviews for this tag do not yet exist in IDeal.")
     flash ("Please enter a search term in category.")
   return render_template('index.html',pageTitle='IDeal')
 
-@app.route('/display/<company_name>', methods=['POST','GET'])
-def display(company_name=None, terms=None, identity=None):
-  #curs = getConn().cursor(MySQLdb.cursors.DictCursor)
-  if company_name:
-    rows = getCompanyReviews(company_name)
-  elif terms:
-    rows = getTermReviews(terms)
-  else:
-    rows =getIdentityReviews(identity)
-  
+@app.route('/display-identity/<identity>', methods=['POST','GET'])
+def display_identity(identity):
+  print "in the else"
+  rows = getIdentityReviews(identity)
+  print rows
+  return render_template("display-identity.html", identity=identity, info = rows)
+
+
+@app.route('/display-company/<company_name>', methods=['POST','GET'])
+def display_company(company_name):
+  print "in the if"
+  rows = getCompanyReviews(company_name)
   return render_template("display.html", company=company_name, info = rows)
 
-  
+@app.route('/display-term/<term>', methods=['POST','GET'])
+def display_term(term):
+  curs = getConn().cursor(MySQLdb.cursors.DictCursor)
+  curs.execute("select * from reviews where reviewID in (select reviewID from terms where term = %s)", (term,))
+  rows = curs.fetchall()
+  return render_template("display-terms.html", term=term, info = rows)
+
+
 @app.route('/insert/', methods=['POST', 'GET'])
 def insert():
   if request.method == 'POST':
@@ -98,6 +108,7 @@ def displayAccount(accountName):
   rows = getAccountInfo(accountName)
   return render_template("account_display.html", accountName = accountName, info = rows)
 
+
 @app.route('/register', methods = ['POST', 'GET'])
 def register():
   if request.method == 'POST':
@@ -139,15 +150,17 @@ def getCompanyReviews(company):
   row = curs.fetchall()
   #formatting 
   return row 
+
 def getTermReviews(term):
   curs = getConn().cursor(MySQLdb.cursors.DictCursor)
   curs.execute('select * from reviews join (select term from terms where name like %s) as currCompany on reviews.reviewID = currCompany.reviewID', ('%'+term+'%',))
   row = curs.fetchall()
   #formatting 
   return row 
+
 def getIdentityReviews(identity):
   curs = getConn().cursor(MySQLdb.cursors.DictCursor)
-  curs.execute('select * from reviews join (select identity from companies where name like %s) as currCompany on reviews.reviewID = currCompany.reviewID', ('%'+identity+'%',))
+  curs.execute('select * from reviews where accountName in (select accountName from identities where identity = %s)', (identity,))
   row = curs.fetchall()
   #formatting 
   return row 
@@ -158,18 +171,6 @@ def getAccountInfo(accountName):
   row = curs.fetchall()
   return row
   
-# @app.route('/display/<term>', methods=['POST','GET'])
-# def display_review(term):
-#   curs = getConn().cursor(MySQLdb.cursors.DictCursor)
-#   curs.execute('select * from reviews join (select term from terms where name like %s) as currCompany on reviews.reviewID = currCompany.reviewID', ('%'+term+'%',))
-#   row = curs.fetchall()
-  
-# @app.route('/display/<identity>', methods=['POST','GET'])
-# def display_review(identity):
-#   curs = getConn().cursor(MySQLdb.cursors.DictCursor)
-#   curs.execute('select * from reviews join (select identity from companies where name like %s) as currCompany on reviews.reviewID = currCompany.reviewID', ('%'+identity+'%',))
-#   row = curs.fetchall()
-
 if __name__ == '__main__':
     app.debug = True
     port = os.getuid()
