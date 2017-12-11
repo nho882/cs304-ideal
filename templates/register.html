@@ -6,7 +6,7 @@
           </div>
         </center>
     <div class=content>
-      <form method="POST" action="{{script}}">
+      <form method="POST" action="{{script}}" name="upload" enctype="multipart/form-data">
           <div class="form-group">
                           <label for='accountName'> Enter a username:</label> <input type="text"class="form-control" name="accountName" aria-describedby="textbox" placeholder="Ex. my_account_name">
                           <br>
@@ -25,10 +25,11 @@
                           <br>
                           Upload your resume. Only PDFs accepted.
                           <br>
-                          <form action = "http://localhost:5000/uploader" method = "POST" 
+                        <!--   <form action = "http://localhost:5000/uploader" method = "POST" 
                             enctype = "multipart/form-data">
                              <input type = "file" name = "file" />
-                          </form>
+                          </form> -->
+                          <p><label for="resume"> <input type="file" name="resume"></label>
                           <br>
                           <br>
                           <button type="submit" class="btn btn-primary btn-block" >Register Me!</button>
