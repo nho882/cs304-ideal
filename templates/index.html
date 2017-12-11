@@ -16,10 +16,16 @@
       <a class="nav-item nav-link" href="{{url_for('contact')}}">Contact</a>
       <a class="nav-item nav-link" href="{{url_for('insert')}}">Add a review</a>
     </div>
+    {% if session['logged_in'] == False %}
     <a class="btn btn-outline-secondary ml-auto" href="{{url_for('signon')}}" role="button">Log In</a>
       <div class ="pull-right">
     <a class="btn btn-outline-secondary ml-auto" href="{{url_for('register')}}" role="button">Register</a>
       </div>
+    {% else %}
+        <div class ="pull-right">
+        <button id= "signOut" class="btn btn-outline-secondary ml-auto" type="button">Sign Out</button>
+        </div>
+    {% endif %}
   </div>
 </nav>
 

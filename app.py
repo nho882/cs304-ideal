@@ -87,6 +87,7 @@ def signon():
       return render_template('sign_on.html')
     if row['password'] == password:
       flash("Successfully logged in.")
+      session['logged_in'] = True
       resp = make_response(render_template('account_display.html',
                                            accountName = account))
       resp.set_cookie('username', request.form['accountName'])
