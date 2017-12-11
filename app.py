@@ -1,6 +1,6 @@
-import os, sys, datetime, MySQLdb, dbconn2, helper 
+import os, sys, datetime, MySQLdb, dbconn2, helper, imghdr, re
 from flask import Flask, render_template, request, redirect, url_for, flash, make_response
-import re
+from werkzeug import secure_filename
 app = Flask(__name__)
 app.secret_key = 'nancyhohoho'
 

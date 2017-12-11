@@ -1,4 +1,5 @@
-import os, sys, datetime, MySQLdb, dbconn2
+import os, sys, datetime, MySQLdb, dbconn2, imghdr
+from werkzeug import secure_filename
 
 def getConn():
   DSN = dbconn2.read_cnf()
@@ -13,6 +14,7 @@ def login(account, password):
 
 def insertReview(account, company, review, sentiment, salary):
   curs = getConn().cursor(MySQLdb.cursors.DictCursor)
+  curs.execute("insert into companies values (%s)", (company,))
   curs.execute("insert into reviews values (Null, %s, %s,%s, %s, %s)", (account, review, sentiment, salary, company))
 
 def getIdentities():
