@@ -9,8 +9,11 @@
       <form method="POST" action="{{script}}">
           <div class="form-group">
                           <label for='accountName'> Enter a username:</label> <input type="text"class="form-control" name="accountName" aria-describedby="textbox" placeholder="Ex. my_account_name">
+                          <br>
                           <label for='password'> Enter a password: </label><input type="password" class="form-control" name="password" aria-describedby="textbox" placeholder="Ex. someth1ng_v3ry_s3cur3">
+                          <br>
                           <label for='jobTitle'> Enter a Jobtitle: </label><input type="text" class="form-control" name="jobTitle" aria-describedby="textbox" placeholder="Ex. Software Engineering">
+                          <br>
                           Please Select Your Identities
                           <div id="identities-container" class="container">
                           {% for identity in identities %}
@@ -19,15 +22,18 @@
                               <label for="{{identity}}">{{identity}}</label>
                           {% endfor %}
                           </div>
+                          <br>
+                          Upload your resume. Only PDFs accepted.
+                          <br>
                           <form action = "http://localhost:5000/uploader" method = "POST" 
                             enctype = "multipart/form-data">
                              <input type = "file" name = "file" />
                           </form>
+                          <br>
+                          <br>
                           <button type="submit" class="btn btn-primary btn-block" >Register Me!</button>
                       </div></p>
       </form>
     </div>
-
-      <h1> NOTE: WE WILL HAVE PEOPLE UPLOAD THEIR RESUMES HERE. </h1>
 
 {% endblock %}
