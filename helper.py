@@ -14,7 +14,9 @@ def login(account, password):
 
 def insertReview(account, company, review, sentiment, salary):
   curs = getConn().cursor(MySQLdb.cursors.DictCursor)
-  curs.execute("insert into companies values (%s)", (company,))
+  curs.execute("select * from companies where companyName = %s", (company,))
+  if not curs.fetchone():
+      curs.execute("insert into companies values (%s)", (company,))
   curs.execute("insert into reviews values (Null, %s, %s,%s, %s, %s)", (account, review, sentiment, salary, company))
 
 def getIdentities():

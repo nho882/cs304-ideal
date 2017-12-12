@@ -59,7 +59,7 @@ def display_term(term):
 @app.route('/insert/', methods=['POST', 'GET'])
 def insert():
   if request.method == 'POST':
-    account = request.form['accountName']
+    account = session['user_name']
     companyName = request.form['companyName']
     review = request.form['review']
     sentiment = request.form['sentiment']
@@ -70,12 +70,11 @@ def insert():
 
   user = session.pop('user_name', None)
   if user: 
-    # add the user back into session
     session['user_name'] = user
     return render_template('insert.html', account=user)
   else: 
     flash("You must be logged in to add a review!")
-    return render_template('insert.html', account="NO ACCOUNT!")
+    return redirect(url_for('signon'))
   
 
 @app.route('/sign_on', methods = ['POST', 'GET'])
