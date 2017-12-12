@@ -1,5 +1,5 @@
 import os, sys, datetime, MySQLdb, dbconn2, helper, imghdr, re
-from flask import Flask, render_template, request, redirect, url_for, flash, make_response
+from flask import Flask, render_template, request, redirect, url_for, flash, make_response, session
 from werkzeug import secure_filename
 app = Flask(__name__)
 app.secret_key = 'nancyhohoho'
@@ -68,9 +68,11 @@ def insert():
     flash("Thank you for submitting your reivew!")
     return render_template('insert.html')
 
-  cookie = request.cookies.get('username')
-  if cookie: 
-    return render_template('insert.html', account=cookie)
+  user = session.pop('user_name', None)
+  if user: 
+    # add the user back into session
+    session['user_name'] = user
+    return render_template('insert.html', account=user)
   else: 
     flash("You must be logged in to add a review!")
     return render_template('insert.html', account="NO ACCOUNT!")
@@ -88,12 +90,13 @@ def signon():
     if row['password'] == password:
       flash("Successfully logged in.")
       session['logged_in'] = True
-      resp = make_response(render_template('account_display.html',
-                                           accountName = account))
-      resp.set_cookie('username', request.form['accountName'])
+      session['user_name'] = account
+      # resp = make_response(render_template('account_display.html',
+      #                                      accountName = account))
+      # resp.set_cookie('username', request.form['accountName'])
       # return render_template('account_display.html')
-      # return redirect(url_for('displayAccount', accountName = account))
-      return resp
+      return redirect(url_for('displayAccount', accountName = account))
+      # return resp
       #Redirect to an account page
     else:
       flash("Sorry, we do not recognize this username and password.")
@@ -140,6 +143,12 @@ def about():
 @app.route('/contact/', methods = ['POST', 'GET'])
 def contact():
   return render_template('contact.html')
+
+@app.route('/signout/', methods = ['GET'])
+def signout():
+  session["logged_in"] = False
+  session.pop('user_name', None)
+  return redirect(url_for('searchBar'))
   
 if __name__ == '__main__':
     app.debug = True
