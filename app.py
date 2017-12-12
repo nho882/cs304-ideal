@@ -1,5 +1,5 @@
 import os, sys, datetime, MySQLdb, dbconn2, helper, imghdr, re
-from flask import Flask, render_template, request, redirect, url_for, flash, make_response
+from flask import Flask, render_template, request, redirect, url_for, flash, make_response, session
 from werkzeug import secure_filename
 app = Flask(__name__)
 app.secret_key = 'nancyhohoho'
@@ -18,7 +18,7 @@ def searchBar():
       row = curs.fetchone()
       print row
       if row is not None: #Returns redirect if nonempty
-      	return redirect(url_for('display_company', company_name = row['companyName']))
+        return redirect(url_for('display_company', company_name = row['companyName']))
       flash("Sorry, reviews for this company do not yet exist in IDeal.") #Flashes error if no such title
     #flash ("Please enter a search term in category.") #Flashes error if empty search
     elif identity:
@@ -68,9 +68,11 @@ def insert():
     flash("Thank you for submitting your reivew!")
     return render_template('insert.html')
 
-  cookie = request.cookies.get('username')
-  if cookie: 
-    return render_template('insert.html', account=cookie)
+  user = session.pop('user_name', None)
+  if user: 
+    # add the user back into session
+    session['user_name'] = user
+    return render_template('insert.html', account=user)
   else: 
     flash("You must be logged in to add a review!")
     return render_template('insert.html', account="NO ACCOUNT!")
@@ -88,13 +90,8 @@ def signon():
     if row['password'] == password:
       flash("Successfully logged in.")
       session['logged_in'] = True
-      resp = make_response(render_template('account_display.html',
-                                           accountName = account))
-      resp.set_cookie('username', request.form['accountName'])
-      # return render_template('account_display.html')
-      # return redirect(url_for('displayAccount', accountName = account))
-      return resp
-      #Redirect to an account page
+      session['user_name'] = account
+      return redirect(url_for('displayAccount', accountName = account))
     else:
       flash("Sorry, we do not recognize this username and password.")
       return render_template('sign_on.html')
@@ -114,8 +111,6 @@ def register():
     password = request.form['password']
     jobTitle = request.form['jobTitle']
     identities = request.form.getlist('identities')
-    resume = request.files['resume']
-    resume.save(secure_filename(resume.filename))
 
     if account and password and jobTitle and identities:
       curs = helper.getConn().cursor(MySQLdb.cursors.DictCursor)
@@ -142,6 +137,12 @@ def about():
 @app.route('/contact/', methods = ['POST', 'GET'])
 def contact():
   return render_template('contact.html')
+
+@app.route('/signout/', methods = ['GET'])
+def signout():
+  session["logged_in"] = False
+  session.pop('user_name', None)
+  return redirect(url_for('searchBar'))
   
 if __name__ == '__main__':
     app.debug = True
@@ -150,5 +151,3 @@ if __name__ == '__main__':
     print('Running on port '+str(port))
     app.run('0.0.0.0',port)
       
-  
-

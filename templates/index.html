@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <head> 
   <title> IDeal: Working with Transparency</title>
@@ -16,24 +15,15 @@
       <a class="nav-item nav-link" href="{{url_for('contact')}}">Contact</a>
       <a class="nav-item nav-link" href="{{url_for('insert')}}">Add a review</a>
     </div>
-    {% if session['logged_in'] == False %}
+    {% if session.get('logged_in', False) == False %}
     <a class="btn btn-outline-secondary ml-auto" href="{{url_for('signon')}}" role="button">Log In</a>
       <div class ="pull-right">
     <a class="btn btn-outline-secondary ml-auto" href="{{url_for('register')}}" role="button">Register</a>
       </div>
     {% else %}
         <div class ="pull-right">
-        <button id= "signOut" class="btn btn-outline-secondary ml-auto" type="button">Sign Out</button>
-        </div>
-        <script>
-          console.log("HELLO");
-          button = document.getElementById("signOut");
-          button.addEventListener(
-            "click", (e) => { 
-              console.log("HELLO");
-              console.log(document.cookie);
-            });
-        </script>
+    <a class="btn btn-outline-secondary ml-auto" href="{{url_for('signout')}}" role="button">Sign Out</a>
+      </div>
     {% endif %}
   </div>
 </nav>
