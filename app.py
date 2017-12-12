@@ -52,7 +52,7 @@ def display_company(company_name):
 
 @app.route('/display-term/<term>', methods=['POST','GET'])
 def display_term(term):
-  rows = helper.getTermReviews(terms)
+  rows = helper.getTermReviews(term)
   return render_template("display-terms.html", term=term, info = rows)
 
 
@@ -65,7 +65,7 @@ def insert():
     sentiment = request.form['sentiment']
     salary = request.form['salary']
     helper.insertReview(account, companyName, review, sentiment, salary)
-    flash("Thank you for submitting your reivew!")
+    flash("Thank you for submitting your review!")
     return render_template('insert.html')
 
   user = session.pop('user_name', None)
@@ -98,7 +98,12 @@ def signon():
   return render_template('sign_on.html')
 
 @app.route('/account/<accountName>', methods = ['POST', 'GET'])
-def displayAccount(accountName):
+def displayAccount(accountName=None):
+  if not accountName:
+    if session.get("user_name", None):
+      accountName = session["user_name"]
+    else:
+      return redirect(url_for(signon))
   rows = helper.getAccountInfo(accountName)
   return render_template("account_display.html", accountName = accountName, info = rows)
 
@@ -120,7 +125,7 @@ def register():
         return render_template('register.html')
       else:
         flash("Successfully created account!")
-        curs.execute("insert into account values (%s, %s, %s)", (account, password, jobTitle))
+        curs.execute("insert into account values (%s, %s, %s, Null)", (account, password, jobTitle))
         for identity in identities:
           curs.execute("insert into identities values(%s, %s)", (identity, account))
         return redirect(url_for('displayAccount', accountName = account))

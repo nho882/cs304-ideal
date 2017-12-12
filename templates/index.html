@@ -22,6 +22,9 @@
       </div>
     {% else %}
     <a class="btn btn-outline-secondary ml-auto" href="{{url_for('signout')}}" role="button">Sign Out</a>
+    <div class ="pull-right">
+    <a class="btn btn-outline-secondary ml-auto" href="{{url_for('displayAccount', accountName=session.get('user_name', None))}}" role="button">My Account</a>
+  </div>
     {% endif %}
   </div>
 </nav>
@@ -46,6 +49,17 @@ z-index: -1;
 </style>
 
 <center> <div class="jumbotron-fluid">
+    <h3>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+      <div id="messages">
+      {% for msg in messages %}
+          <p>{{msg}}</p>
+      {% endfor %}
+      </div>
+  {% endif %}
+  {% endwith %} 
+  </h3>
   {% block content %}
    <center>
           <div class="jumbotron"><h4 class="display-3">IDeal  </h4>
@@ -68,18 +82,6 @@ z-index: -1;
 </div>
 
   {% endblock %}
-
-  <h3>
-  {% with messages = get_flashed_messages() %}
-  {% if messages %}
-      <div id="messages">
-      {% for msg in messages %}
-          <p>{{msg}}</p>
-      {% endfor %}
-      </div>
-  {% endif %}
-  {% endwith %} 
-  </h3>
 </div> 
 </center>
 

@@ -1,8 +1,8 @@
 {% extends 'index.html' %}
 {% block content %}
-    <div class="jumbotron"><h1> identity: {{identity}} </h1></div>
+    <div class="jumbotron"><h1> Identity: {{identity}} </h1></div>
   {% for review in info %} 
-    <div class="container">
+    <div class="content">
         <p> Account: {{review['accountName']}} </p>
         <p> Review: {{review['reviewText']}} </p>
         <p> Sentiment: {{review['sentiment']}}</p>

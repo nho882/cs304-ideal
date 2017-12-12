@@ -3,21 +3,17 @@
     <div class="jumbotron">
         <h4 class="display-4"> Please sign in to add a review. </h4>
     </div>
- {% with messages = get_flashed_messages() %}
-  {% if messages %}
-      <div id="messages">
-      {% for msg in messages %}
-          <p>{{msg}}</p>
-      {% endfor %}
-      </div>
-    {% endif %}
-  {% endwith %}
+  <div class="content">
     <form method=POST action="{{script}}">
+      <div class="form-group">
         <label for="accountName">Username </label>
-        <input name="accountName" value="">
-        <p>
+        <input class="form-control"name="accountName" value="">
+        <br>
         <label for="accountPassword">Password </label>
-        <input type = "password" name="accountPassword" value="">
-        <input type="submit" name="submit-btn" value="Log in">
+        <input class="form-control" type = "password" name="accountPassword" value="">
+        <br>
+        <button type="submit" class="btn btn-primary btn-block" >Log In</button>
+      </div>
     </form>
+  </div>
 {% endblock %}
