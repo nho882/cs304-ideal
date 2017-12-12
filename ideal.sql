@@ -8,7 +8,8 @@ drop table if exists account;
 create table account (
 	accountName varchar(20) primary key,
 	password varchar(20) not null,
-	jobTitle varchar(20)
+	jobTitle varchar(20),
+	resume BLOB
 	)
 
 ENGINE = InnoDB;

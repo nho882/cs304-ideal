@@ -17,7 +17,7 @@
       <h4> About us </h4>
       Nancy Ho (she/her/hers) and Pet Ramanudom (she/they) are seniors at Wellesley College. They're also friends!
       <p>
-      <img src="{{url_for('static',filename='IMG_8536.JPG')}}" alt="ImagePet" style="width:250px;height:333px;">
-      <img src = "{{url_for('static',filename='DSC_0984.JPG')}}" alt = "ImageNancy" style = "width:220px;height:333px">
+      <img src="{{url_for('static',filename='static/IMG_8536.JPG')}}" alt="ImagePet" style="width:250px;height:333px;">
+      <img src = "{{url_for('static',filename='static/DSC_0984.JPG')}}" alt = "ImageNancy" style = "width:220px;height:333px">
     </div>
 {% endblock %}

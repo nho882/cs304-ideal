@@ -1,5 +1,5 @@
-insert into account values ("nancyho", "mypassword", "PM");
-insert into account values ("petramanudom", "mypassword", "SWE");
+insert into account values ("nancyho", "mypassword", "PM", null);
+insert into account values ("petramanudom", "mypassword", "SWE", null);
 
 insert into identities values ("East Asian", "nancyho");
 insert into identities values ("Southeast Asian", "petramanudom");
