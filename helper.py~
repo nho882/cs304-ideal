@@ -51,6 +51,4 @@ def getAccountInfo(accountName):
 def get_useful_count(reviewID):
   curs = getConn().cursor(MySQLdb.cursors.DictCursor)
   curs.execute('select useful from reviews where reviewID= %s', (reviewID,))
-  row = curs.fetchone()
-  print "here is the info",row['useful']
-  return row
+  return curs.fetchone()

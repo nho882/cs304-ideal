@@ -147,6 +147,11 @@ def signout():
   session["logged_in"] = False
   session.pop('user_name', None)
   return redirect(url_for('searchBar'))
+
+@app.route('/get_useful_count/', methods = ['POST'])
+def get_useful_count(reviewID):
+  #hardcoded for the first review always, for now
+  return jsonify(useful1 = helper.get_useful_count(reviewID)['useful'])
   
 if __name__ == '__main__':
     app.debug = True
