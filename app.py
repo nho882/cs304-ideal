@@ -1,5 +1,5 @@
 import os, sys, datetime, MySQLdb, dbconn2, helper, imghdr, re
-from flask import Flask, render_template, request, redirect, url_for, flash, make_response, session
+from flask import Flask, render_template, request, redirect, url_for, flash, make_response, session, jsonify
 from werkzeug import secure_filename
 app = Flask(__name__)
 app.secret_key = 'nancyhohoho'
@@ -148,10 +148,22 @@ def signout():
   session.pop('user_name', None)
   return redirect(url_for('searchBar'))
 
-@app.route('/get_useful_count/', methods = ['POST'])
-def get_useful_count(reviewID):
+@app.route('/get_useful_count/', methods=['POST', 'GET'])
+def get_useful_count():
+  if request.method == 'GET':
+    reviewID = request.args.get('review_ID')
+
   #hardcoded for the first review always, for now
-  return jsonify(useful1 = helper.get_useful_count(reviewID)['useful'])
+  return jsonify(useful = helper.get_useful_count(reviewID)['useful'])
+
+@app.route('/update_useful_count/', methods=['GET'])
+def update_useful_count():
+  if request.method == 'GET':
+    reviewID = request.args.get('review_ID');
+  return jsonify(usefulUpdate = helper.update_useful_count(reviewID)['useful'])
+
+
+    
   
 if __name__ == '__main__':
     app.debug = True

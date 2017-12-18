@@ -40,7 +40,7 @@ def getIdentityReviews(identity):
   curs = getConn().cursor(MySQLdb.cursors.DictCursor)
   curs.execute('select * from reviews where accountName in (select accountName from identities where identity = %s)', (identity,))
   row = curs.fetchall()
-  return row 
+  return row
 
 def getAccountInfo(accountName):
   curs = getConn().cursor(MySQLdb.cursors.DictCursor)
@@ -51,6 +51,15 @@ def getAccountInfo(accountName):
 def get_useful_count(reviewID):
   curs = getConn().cursor(MySQLdb.cursors.DictCursor)
   curs.execute('select useful from reviews where reviewID= %s', (reviewID,))
-  row = curs.fetchone()
-  print "here is the info",row['useful']
-  return row
+  return curs.fetchone()
+
+def update_useful_count(reviewID):
+  curs = getConn().cursor(MySQLdb.cursors.DictCursor)
+  update_count = int(get_useful_count(reviewID)['useful'])+1
+  curs.execute('UPDATE reviews set useful=%s WHERE reviewID = %s',
+      (update_count, reviewID ))
+  return get_useful_count(reviewID)
+
+
+
+
