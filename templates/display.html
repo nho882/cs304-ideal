@@ -1,6 +1,6 @@
 {% extends 'index.html' %}
 {% block content %}
-    <div class="jumbotron"><h1> Company: {{company}} </h1></div>
+    <div class="jumbotron"><h4 class="display-3"> Company: {{company}} </h4></div>
   {% for review in info %} 
     <div class="content">
         <p> Account: {{review['accountName']}} </p>
@@ -8,7 +8,7 @@
         <p> Sentiment: {{review['sentiment']}}</p>
         <p> Salary: {{review['salary']}} </p>
         <button type="button" id="button{{loop.index}}" class="btn btn-primary btn-sm useful" value="{{review['reviewID']}}">
-            Useful: <span id="useful{{loop.index}}"></span>
+        <span id="useful{{loop.index}}"></span> found this review useful
         </button> 
     </div>
     <br>

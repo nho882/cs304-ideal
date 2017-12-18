@@ -1,8 +1,27 @@
 {% extends 'index.html' %}
 {% block content %}
-  <div class="container">
     <h1> Welcome, {{accountName}} </h1>
-    <h4> See below for your most recent reviews.</h4>
+    <div>
+    <br><h5> Settings </h5>
+    <div class="content">
+      <form method="POST" action="{{script}}">
+          <div class="form-group">
+                          <br>
+                          <label for='companyName'> User Name: </label><input type="text" class="form-control" name="companyName" aria-describedby="textbox"
+                          placeholder="Ex. Facebook">
+                          <br>
+                          <label for='review'> Password: </label><input type="text" class="form-control" name="review" aria-describedby="textbox"
+                          placeholder="Ex. My experience at this company was ...">
+                          <br>
+                      <p><div style="margin: auto;">
+                          <button type="submit" class="btn btn-primary btn-block" >Go!</button>
+                      </div></p>
+      </form>
+    </div>
+  </div>
+  <br>
+  <div>
+  <h5> See below for your most recent reviews.</h5>
   {% for review in info %} 
     <div class="content">
         <p> Company: {{review['companyName']}} </p>
@@ -13,5 +32,5 @@
     <br>
 
   {% endfor %}
-</div>
+ </div>
 {% endblock %}
