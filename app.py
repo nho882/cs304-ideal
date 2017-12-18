@@ -73,7 +73,6 @@ def insert():
     session['user_name'] = user
     return render_template('insert.html', account=user)
   else: 
-    flash("You must be logged in to add a review!")
     return redirect(url_for('signon'))
   
 
