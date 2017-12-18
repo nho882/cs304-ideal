@@ -1,15 +1,15 @@
 .jumbotron-fluid{
-width:90vw;
-margin-bottom: -500px;
-z-index: -1;
+  width:90vw;
+  margin-bottom: -500px;
+  z-index: -1;
 }
 .display-3{
   color:#fff;
 }
 .jumbotron{
 /* background-image: url('pexels-pattern.jpeg') !important; */
-width:-webkit-fill-available;
-background-color: #00A896;
+  width:-webkit-fill-available;
+  background-color: #00A896;
 }
 .content{
   border-radius: 5px;
@@ -17,11 +17,28 @@ background-color: #00A896;
   padding: 10px;
   background-color: #81C1B3;
 }
-.btn-primary {
-    color: #fff;
-    background-color: #72a5b1;
-    border-color: #72a5b1;
+.btn-sm:hover{
+  background-color:#F0F3BD !important;
+  color:black !important;
+  border-color:transparent;
 }
+.btn-sm{
+  color: #fff !important;
+  background-color: #05668d !important;
+  border-color:transparent !important;
+}
+.btn-primary:hover{
+  background-color:#F0F3BD !important;
+  color:black !important;
+  border-color:transparent;
+}
+
+.btn-primary{
+  color: #fff !important;
+  background-color: #05668d !important;
+  border-color:transparent !important;
+}
+
 .navbar.navbar-expand-lg{
   background-color: #05668d !important;
 
@@ -33,18 +50,19 @@ background-color: #00A896;
   color:#fff;
 }
 .btn-outline-secondary {
-    color: #ffffff;
-    background-color: transparent;
-    background-image: none;
-    border-color: #028090;
+  color: #ffffff;
+  background-color: transparent;
+  background-image: none;
+  border-color: transparent;
 
 }
 .btn-outline-secondary:hover{
   background-color:#81C1B3;
+  border-color: transparent;
 }
 .btn-primary{
- color:#ffffff;
- background-color:#05668d;
+  color:#ffffff;
+  background-color:#05668d;
 }
 body{
   background-image: url("geometric.jpg") !important;
