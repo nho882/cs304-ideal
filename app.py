@@ -161,6 +161,20 @@ def update_useful_count():
     reviewID = request.args.get('review_ID');
   return jsonify(usefulUpdate = helper.update_useful_count(reviewID)['useful'])
 
+@app.route('/get-all-reviews/', methods=["GET"])
+def get_all_reviews():
+  return jsonify(reviews = helper.get_all_reviews())
+
+
+@app.route('/get-all-users/', methods=["GET"])
+def get_all_users():
+  result = {}
+  rows = helper.get_all_users()
+  for user in rows:
+    account = user['accountName'] 
+    result[account] = helper.getAccountInfo(account)
+  return jsonify(users =result)
+
 
     
   

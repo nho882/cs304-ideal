@@ -60,6 +60,18 @@ def update_useful_count(reviewID):
       (update_count, reviewID ))
   return get_useful_count(reviewID)
 
+def get_all_reviews():
+  curs = getConn().cursor(MySQLdb.cursors.DictCursor)
+  curs.execute("SELECT * FROM reviews")
+  return curs.fetchall()
+
+def get_all_users():
+  curs = getConn().cursor(MySQLdb.cursors.DictCursor)
+  curs.execute("SELECT * FROM account") # Guaranteed to be distinct
+  return curs.fetchall()
+
+
+
 
 
 
