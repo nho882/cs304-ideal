@@ -11,12 +11,17 @@ const start = () => {
 			$.getJSON($SCRIPT_ROOT + '/update_useful_count/', {"review_ID": review_ID}, (data) => {
 		        $("#"+id).text(data["usefulUpdate"]);
 			});
+			$(el).prop("disabled",true);
+
 		});
 	});
 
 	$("#display-all-reviews").bind("click", () =>{
 		$.getJSON($SCRIPT_ROOT + '/get-all-reviews/', (data) => {
-			console.log(data);
+			data.each((index, el) =>{
+				// let reviewDiv = $("<div>", {"class"="content"});
+
+			});
 		});
 
 	});

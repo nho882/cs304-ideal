@@ -8,8 +8,8 @@
         <p> Review: {{review['reviewText']}} </p>
         <p> Sentiment: {{review['sentiment']}}</p>
         <p> Salary: {{review['salary']}} </p>
-        <button type="button" id="button{{loop.index}}" class="btn btn-primary btn-sm useful" value="{{review['reviewID']}}">
-          <span id="useful{{loop.index}}"></span> found this review useful
+        <button type="button" id="button{{loop.index}}" class="btn btn-primary btn-sm useful" disabled=false value="{{review['reviewID']}}">
+        <span id="useful{{loop.index}}"></span> found this review useful
         </button> 
     </div>
     <br>

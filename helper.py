@@ -81,6 +81,10 @@ def updateAccount(oldName, newName, newPassword, newJobTitle):
   curs.execute('UPDATE account set accountName=%s, password=%s,jobtitle=%s WHERE accountName=%s',
     (newName, newPassword, newJobTitle, oldName))
 
+def deleteReview(reviewID):
+  curs = getConn().cursor(MySQLdb.cursors.DictCursor)
+  curs.execute("DELETE FROM reviews WHERE reviewID=%s", (reviewID,))
+
 
 
 

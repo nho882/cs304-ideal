@@ -191,6 +191,16 @@ def get_all_users():
     account = user['accountName'] 
     result[account] = helper.getAccountReviews(account)
   return jsonify(users =result)
+
+@app.route('/delete-review/', methods=["GET"])
+def delete_review(account_name=None, reviewID=None):
+  print "in here!"
+  print "hello"
+  account_name = request.args.get("account_name")
+  reviewID = request.args.get("reviewID")
+  helper.deleteReview(reviewID)
+  return redirect(url_for("displayAccount", accountName=account_name))
+
     
   
 if __name__ == '__main__':
