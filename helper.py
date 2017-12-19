@@ -8,49 +8,55 @@ def getConn():
 
 def login(account, password):
   curs = getConn().cursor(MySQLdb.cursors.DictCursor)
-  curs.execute("select * from account where accountName = %s", (account,))
+  curs.execute("SELECT * FROM account WHERE accountName = %s", (account,))
   row = curs.fetchone()
   return row
 
 def insertReview(account, company, review, sentiment, salary):
   curs = getConn().cursor(MySQLdb.cursors.DictCursor)
-  curs.execute("select * from companies where companyName = %s", (company,))
+  curs.execute("SELECT * FROM companies WHERE companyName = %s", (company,))
   if not curs.fetchone():
       curs.execute("insert into companies values (%s)", (company,))
   curs.execute("insert into reviews values (Null, %s, %s,%s, %s, %s, 0)", (account, review, sentiment, salary, company))
 
 def getIdentities():
   curs = getConn().cursor(MySQLdb.cursors.DictCursor)
-  curs.execute("show columns from identities where field = 'identity'")
+  curs.execute("show columns FROM identities WHERE field = 'identity'")
   return curs.fetchall()
 
 def getCompanyReviews(company):
   curs = getConn().cursor(MySQLdb.cursors.DictCursor)
-  curs.execute('select * from reviews where companyName like %s', ('%'+company+'%',))
+  curs.execute('SELECT * FROM reviews WHERE companyName like %s', ('%'+company+'%',))
   row = curs.fetchall() 
   return row 
 
 def getTermReviews(term):
   curs = getConn().cursor(MySQLdb.cursors.DictCursor)
-  curs.execute("select * from reviews where reviewID in (select reviewID from terms where term = %s)", (term,))
+  curs.execute("SELECT * FROM reviews WHERE reviewID in (SELECT reviewID FROM terms WHERE term = %s)", (term,))
   row = curs.fetchall()
   return row 
 
 def getIdentityReviews(identity):
   curs = getConn().cursor(MySQLdb.cursors.DictCursor)
-  curs.execute('select * from reviews where accountName in (select accountName from identities where identity = %s)', (identity,))
+  curs.execute('SELECT * FROM reviews WHERE accountName in (SELECT accountName FROM identities WHERE identity = %s)', (identity,))
+  row = curs.fetchall()
+  return row
+
+def getAccountReviews(accountName):
+  curs = getConn().cursor(MySQLdb.cursors.DictCursor)
+  curs.execute('SELECT * FROM reviews WHERE accountName = %s', (accountName,))
   row = curs.fetchall()
   return row
 
 def getAccountInfo(accountName):
   curs = getConn().cursor(MySQLdb.cursors.DictCursor)
-  curs.execute('select * from reviews where accountName = %s', (accountName,))
-  row = curs.fetchall()
-  return row
+  curs.execute("SELECT * FROM account WHERE accountName = %s",
+    (accountName,))
+  return curs.fetchone()
 
 def get_useful_count(reviewID):
   curs = getConn().cursor(MySQLdb.cursors.DictCursor)
-  curs.execute('select useful from reviews where reviewID= %s', (reviewID,))
+  curs.execute('SELECT useful FROM reviews WHERE reviewID= %s', (reviewID,))
   return curs.fetchone()
 
 def update_useful_count(reviewID):
@@ -69,6 +75,14 @@ def get_all_users():
   curs = getConn().cursor(MySQLdb.cursors.DictCursor)
   curs.execute("SELECT * FROM account") # Guaranteed to be distinct
   return curs.fetchall()
+
+def updateAccount(oldName, newName, newPassword, newJobTitle):
+  curs = getConn().cursor(MySQLdb.cursors.DictCursor)
+  curs.execute('UPDATE account set accountName=%s, password=%s,jobtitle=%s WHERE accountName=%s',
+    (newName, newPassword, newJobTitle, oldName))
+
+
+
 
 
 

@@ -97,15 +97,30 @@ def signon():
   return render_template('sign_on.html')
 
 @app.route('/account/<accountName>', methods = ['POST', 'GET'])
-def displayAccount(accountName=None):
-  if not accountName:
-    if session.get("user_name", None):
-      accountName = session["user_name"]
-    else:
-      return redirect(url_for(signon))
-  rows = helper.getAccountInfo(accountName)
-  return render_template("account_display.html", accountName = accountName, info = rows)
+def displayAccount(accountName):
+  if request.method == 'GET':
+    if accountName == session["user_name"]:
+      rows = helper.getAccountReviews(accountName)
+      row = helper.getAccountInfo(accountName)
 
+      return render_template("account_display.html", accountName=accountName, reviews=rows, info=row)
+    else:
+      return redirect(url_for('searchBar'))
+
+  # User submitted form to update account information
+  # Currently fails when user tries to updatea accountName - - DDL needs to be addressed. 
+  elif request.method == 'POST':
+    accountName = session["user_name"]
+    new_user_name = request.form["userName"]
+    new_password = request.form["password"]
+    new_job = request.form["jobTitle"]
+    helper.updateAccount(accountName, new_user_name, new_password, new_job)
+    flash("Your account has been updated")
+    session["user_name"] = new_user_name
+    rows = helper.getAccountReviews(new_user_name)
+    row = helper.getAccountInfo(new_user_name)
+    return render_template("account_display.html", accountName=new_user_name, reviews=rows, info=row)
+     
 
 @app.route('/register', methods = ['POST', 'GET'])
 def register():
@@ -124,6 +139,8 @@ def register():
         return render_template('register.html')
       else:
         flash("Successfully created account!")
+        session["user_name"] = account
+        session["logged_in"] = True
         curs.execute("insert into account values (%s, %s, %s, Null)", (account, password, jobTitle))
         for identity in identities:
           curs.execute("insert into identities values(%s, %s)", (identity, account))
@@ -172,10 +189,8 @@ def get_all_users():
   rows = helper.get_all_users()
   for user in rows:
     account = user['accountName'] 
-    result[account] = helper.getAccountInfo(account)
+    result[account] = helper.getAccountReviews(account)
   return jsonify(users =result)
-
-
     
   
 if __name__ == '__main__':

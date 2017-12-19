@@ -28,21 +28,4 @@ const start = () => {
 	});
 };
 
-// const getAdminContent = () => {
-// 	$("#display-all-reviews").bind("click", () =>{
-// 		$.getJSON($SCRIPT_ROOT + '/get_all_reviews/', (data) => {
-// 			console.log(data);
-// 		});
-
-// 	});
-
-// 	$("#display-all-users").bind("click", () => {
-// 		$.getJSON($SCRIPT_ROOT + '/get_all_users/', (data) => {
-// 			console.log(data)l
-// 		});
-// 	});
-
-// };
-
 $(document).ready(start);
-// $(document).ready(getAdminContent);
