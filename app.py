@@ -102,24 +102,21 @@ def displayAccount(accountName):
     if accountName == session["user_name"]:
       rows = helper.getAccountReviews(accountName)
       row = helper.getAccountInfo(accountName)
-
       return render_template("account_display.html", accountName=accountName, reviews=rows, info=row)
     else:
+      # No accountName specified 
+      #OR the user is attempting to look at an account that is not theirs.
       return redirect(url_for('searchBar'))
-
-  # User submitted form to update account information
-  # Currently fails when user tries to updatea accountName - - DDL needs to be addressed. 
+  # On updating account information
   elif request.method == 'POST':
     accountName = session["user_name"]
-    new_user_name = request.form["userName"]
     new_password = request.form["password"]
     new_job = request.form["jobTitle"]
-    helper.updateAccount(accountName, new_user_name, new_password, new_job)
+    helper.updateAccount(accountName, new_password, new_job)
     flash("Your account has been updated")
-    session["user_name"] = new_user_name
     rows = helper.getAccountReviews(new_user_name)
     row = helper.getAccountInfo(new_user_name)
-    return render_template("account_display.html", accountName=new_user_name, reviews=rows, info=row)
+    return render_template("account_display.html", accountName=accountName, reviews=rows, info=row)
      
 
 @app.route('/register', methods = ['POST', 'GET'])
@@ -177,20 +174,6 @@ def update_useful_count():
   if request.method == 'GET':
     reviewID = request.args.get('review_ID');
   return jsonify(usefulUpdate = helper.update_useful_count(reviewID)['useful'])
-
-@app.route('/get-all-reviews/', methods=["GET"])
-def get_all_reviews():
-  return jsonify(reviews = helper.get_all_reviews())
-
-
-@app.route('/get-all-users/', methods=["GET"])
-def get_all_users():
-  result = {}
-  rows = helper.get_all_users()
-  for user in rows:
-    account = user['accountName'] 
-    result[account] = helper.getAccountReviews(account)
-  return jsonify(users =result)
 
 @app.route('/delete-review/', methods=["GET"])
 def delete_review(account_name=None, reviewID=None):
