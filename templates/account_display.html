@@ -1,15 +1,6 @@
 {% extends 'index.html' %}
 {% block content %}
     <h1> Welcome, {{accountName}} </h1>
-    {% if session.get('user_name', None) == "admin" %}
-    <!-- Admin should be able to delete posts and delete accounts. -->
-    <!-- Maybe a link that lists all reviews -->
-    <button id="display-all-reviews" class="btn btn-primary btn-block" > All Reviews</button>
-    <!-- Maybe a link that lists all users -->
-    <button id="display-all-users" type="submit" class="btn btn-primary btn-block" > All Users</button>
-    <div id="admin-reviews"></div>
-    <div id="admin-users"></div>
-    {% else %}
     <div>
     <br><h5> Settings </h5>
     <div class="content">
@@ -47,5 +38,4 @@
 
   {% endfor %}
  </div>
- {% endif %}
 {% endblock %}

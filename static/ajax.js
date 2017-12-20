@@ -11,24 +11,9 @@ const start = () => {
 			$.getJSON($SCRIPT_ROOT + '/update_useful_count/', {"review_ID": review_ID}, (data) => {
 		        $("#"+id).text(data["usefulUpdate"]);
 			});
+			// Once a user upvotes, the button should be disabled.
 			$(el).prop("disabled",true);
 
-		});
-	});
-
-	$("#display-all-reviews").bind("click", () =>{
-		$.getJSON($SCRIPT_ROOT + '/get-all-reviews/', (data) => {
-			data.each((index, el) =>{
-				// let reviewDiv = $("<div>", {"class"="content"});
-
-			});
-		});
-
-	});
-
-	$("#display-all-users").bind("click", () => {
-		$.getJSON($SCRIPT_ROOT + '/get-all-users/', (data) => {
-			console.log(data);
 		});
 	});
 };
