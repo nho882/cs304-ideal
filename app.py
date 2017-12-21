@@ -155,6 +155,11 @@ def register():
   identities = identities.replace('enum','').replace("'", '').split(',')
   return render_template('register.html', identities= identities)
 
+@app.route('/displayResume/<filename>', methods = ['GET'])
+def displayResume():
+  account_name = request.args.get("account_name")
+
+
 @app.route('/about/', methods = ['POST', 'GET'])
 def about():
   return render_template('about.html')
