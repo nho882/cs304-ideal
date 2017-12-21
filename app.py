@@ -166,8 +166,6 @@ def signout():
 def get_useful_count():
   if request.method == 'GET':
     reviewID = request.args.get('review_ID')
-
-  #hardcoded for the first review always, for now
   return jsonify(useful = helper.get_useful_count(reviewID)['useful'])
 
 @app.route('/update_useful_count/', methods=['GET'])
@@ -190,7 +188,6 @@ def delete_review(account_name=None, reviewID=None):
 if __name__ == '__main__':
     app.debug = True
     port = os.getuid()
-    # Flask will print the port anyhow, but let's do so too
     print('Running on port '+str(port))
     app.run('0.0.0.0',port)
       
