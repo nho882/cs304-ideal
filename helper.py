@@ -78,9 +78,8 @@ def deleteReview(reviewID):
 def getFile(accountName):
   curs = getConn().cursor(MySQLdb.cursors.DictCursor)
   curs.execute("SELECT resume FROM account WHERE accountName=%s", (accountName,))
-  row = curs.fetchone()
-  data = row[0]
-  return data
+  row = curs.fetchone()['resume']
+  return row
 
 
 

@@ -1,0 +1,12 @@
+{% extends 'index.html' %}
+{% block content %}
+    <div class="jumbotron">
+        <h1 class="display-3"> Contact  </h1>
+    </div>
+    <div style="bacgkround-color:white">
+    	<h5> Suggestions, questions, or comments? Reach out to us! </h5>
+    	<a href="mailto:nho@wellesley.edu" target="_top">nho@wellesley.edu</a>
+    	<p>
+    	<a href="mailto:bramanud@wellesley.edu" target="_top">bramanud@wellesley.edu</a>
+    </div>
+{% endblock %}

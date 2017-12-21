@@ -41,7 +41,7 @@ create table reviews (
 	sentiment ENUM("Positive", "Negative", "Neutral") not null,
 	salary int unsigned,
 	companyName varchar(20),
-	useful int unsigned  DEFAULT 0,
+	useful int unsigned DEFAULT 0,
 	primary key (reviewID),
 	foreign key (accountName) references account(accountName) on delete restrict,
 	foreign key (companyName) references companies(companyName) on delete restrict

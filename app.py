@@ -1,6 +1,5 @@
 import os, sys, datetime, MySQLdb, dbconn2, helper, imghdr, re
 from flask import Flask, render_template, request, redirect, url_for, flash, make_response, session, jsonify
-import bcrypt
 from werkzeug import secure_filename
 app = Flask(__name__)
 app.secret_key = 'nancyhohoho'
@@ -22,7 +21,6 @@ def searchBar():
       if row is not None: #Returns redirect if nonempty
         return redirect(url_for('display_company', company_name = row['companyName']))
       flash("Sorry, reviews for this company do not yet exist in IDeal.") #Flashes error if no such title
-    #flash ("Please enter a search term in category.") #Flashes error if empty search
     elif identity:
       print identity
       curs.execute('select identity from identities where identity like %s', ('%'+identity+'%',))
@@ -87,7 +85,7 @@ def signon():
     if row is None:
       flash("Sorry, we do not recognize this username and password.")
       return render_template('sign_on.html')
-    if bcrypt.checkpw(password.encode('utf-8'),row['password'].encode('utf-8')):
+    if row['password'] == password:
       flash("Successfully logged in.")
       session['logged_in'] = True
       session['user_name'] = account
@@ -112,12 +110,12 @@ def displayAccount(accountName):
   # On updating account information
   elif request.method == 'POST':
     accountName = session["user_name"]
-    new_password = bcrypt.hashpw(request.form["password"].encode('utf-8'),bcrypt.gensalt())
+    new_password = request.form["password"]
     new_job = request.form["jobTitle"]
     helper.updateAccount(accountName, new_password, new_job)
     flash("Your account has been updated")
-    rows = helper.getAccountReviews(accountName)
-    row = helper.getAccountInfo(accountName)
+    rows = helper.getAccountReviews(new_user_name)
+    row = helper.getAccountInfo(new_user_name)
     return render_template("account_display.html", accountName=accountName, reviews=rows, info=row)
      
 
@@ -125,16 +123,14 @@ def displayAccount(accountName):
 def register():
   if request.method == 'POST':
     account = request.form['accountName']
-    password = bcrypt.hashpw(request.form['password'].encode('utf-8'),bcrypt.gensalt())
+    password = request.form['password']
     jobTitle = request.form['jobTitle']
     identities = request.form.getlist('identities')
     resume = request.files['resume']
     resumeFile = resume.read()
 
     if len(resumeFile) > MAX_FILE_SIZE:
-      flash("Uploaded file is too big")
-      return render_template('register.html', identities=identities)
-
+      return render_template('register.html')
     if account and password and jobTitle and identities:
       curs = helper.getConn().cursor(MySQLdb.cursors.DictCursor)
       curs.execute("select * from account where accountName = %s", (account,))
@@ -156,11 +152,19 @@ def register():
   identities = identities.replace('enum','').replace("'", '').split(',')
   return render_template('register.html', identities= identities)
 
-@app.route('/displayResume/<filename>', methods = ['GET'])
-def displayResume():
-  account_name = request.args.get("account_name")
-  resume = helper.getFile(account_name)
+@app.route('/displayResume/', methods = ['GET'])
+def displayResume(rFileName=None):
+  rFileName = request.args.get("rFileName")
+  print rFileName
+  resume = helper.getFile(rFileName)
+  response = make_response(resume)
+  response.headers['Content-Type'] = 'application/pdf'
+  response.headers['Content-Disposition'] ='inline; filename=%s.pdf' % 'rFileName'
+  return response
 
+@app.route('/<id>')
+def show_pdf(id):
+  return render_template('displayResume.html', doc_id=id)
 
 @app.route('/about/', methods = ['POST', 'GET'])
 def about():
@@ -202,6 +206,7 @@ def delete_review(account_name=None, reviewID=None):
 if __name__ == '__main__':
     app.debug = True
     port = os.getuid()
+    # Flask will print the port anyhow, but let's do so too
     print('Running on port '+str(port))
     app.run('0.0.0.0',port)
       
