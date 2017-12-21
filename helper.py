@@ -17,7 +17,7 @@ def insertReview(account, company, review, sentiment, salary):
   curs.execute("SELECT * FROM companies WHERE companyName = %s", (company,))
   if not curs.fetchone():
       curs.execute("insert into companies values (%s)", (company,))
-  curs.execute("insert into reviews values (Null, %s, %s,%s, %s, %s, 0)", (account, review, sentiment, salary, company))
+  curs.execute("insert into reviews values (Null, %s, %s, %s, %s, %s, 0)", (account, review, sentiment, salary, company))
 
 def getIdentities():
   curs = getConn().cursor(MySQLdb.cursors.DictCursor)
@@ -75,7 +75,12 @@ def deleteReview(reviewID):
   curs = getConn().cursor(MySQLdb.cursors.DictCursor)
   curs.execute("DELETE FROM reviews WHERE reviewID=%s", (reviewID,))
 
-
+def getFile(accountName):
+  curs = getConn().cursor(MySQLdb.cursors.DictCursor)
+  curs.execute("SELECT resume FROM account WHERE accountName=%s", (accountName,))
+  row = curs.fetchone()
+  data = row[0]
+  return data
 
 
 

@@ -4,6 +4,7 @@ import bcrypt
 from werkzeug import secure_filename
 app = Flask(__name__)
 app.secret_key = 'nancyhohoho'
+MAX_FILE_SIZE = 100000  
 
 @app.route('/', methods=['POST','GET']) #Renders search page
 def searchBar():
@@ -127,6 +128,12 @@ def register():
     password = bcrypt.hashpw(request.form['password'].encode('utf-8'),bcrypt.gensalt())
     jobTitle = request.form['jobTitle']
     identities = request.form.getlist('identities')
+    resume = request.files['resume']
+    resumeFile = resume.read()
+
+    if len(resumeFile) > MAX_FILE_SIZE:
+      flash("Uploaded file is too big")
+      return render_template('register.html', identities=identities)
 
     if account and password and jobTitle and identities:
       curs = helper.getConn().cursor(MySQLdb.cursors.DictCursor)
@@ -139,14 +146,21 @@ def register():
         flash("Successfully created account!")
         session["user_name"] = account
         session["logged_in"] = True
-        curs.execute("insert into account values (%s, %s, %s, Null)", (account, password, jobTitle))
+        curs.execute("insert into account values (%s, %s, %s, %s)", (account, password, jobTitle, resumeFile))
         for identity in identities:
           curs.execute("insert into identities values(%s, %s)", (identity, account))
         return redirect(url_for('displayAccount', accountName = account))
+
   identities = helper.getIdentities()[0]['Type']
   identities = re.sub('[(){}<>]', '', identities)
   identities = identities.replace('enum','').replace("'", '').split(',')
   return render_template('register.html', identities= identities)
+
+@app.route('/displayResume/<filename>', methods = ['GET'])
+def displayResume():
+  account_name = request.args.get("account_name")
+  resume = helper.getFile(account_name)
+
 
 @app.route('/about/', methods = ['POST', 'GET'])
 def about():
