@@ -40,9 +40,9 @@ def searchBar():
 
 @app.route('/display-identity/<identity>', methods=['POST','GET'])
 def display_identity(identity):
-  print "in the else"
+  # print "in the else"
   rows = helper.getIdentityReviews(identity)
-  print rows
+  # print rows
   return render_template("display-identity.html", identity=identity, info = rows)
 
 
@@ -100,9 +100,10 @@ def signon():
 @app.route('/account/<accountName>', methods = ['POST', 'GET'])
 def displayAccount(accountName):
   if request.method == 'GET':
+    curs = helper.getConn().cursor(MySQLdb.cursors.DictCursor)
     if accountName == session["user_name"]:
-      rows = helper.getAccountReviews(accountName)
-      row = helper.getAccountInfo(accountName)
+      rows = helper.getAccountReviews(curs, accountName)
+      row = helper.getAccountInfo(curs, accountName)
       return render_template("account_display.html", accountName=accountName, reviews=rows, info=row)
     else:
       # No accountName specified 
@@ -110,19 +111,22 @@ def displayAccount(accountName):
       return redirect(url_for('searchBar'))
   # On updating account information
   elif request.method == 'POST':
+    curs = helper.getConn().cursor(MySQLdb.cursors.DictCursor)
     accountName = session["user_name"]
     new_password = password = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
     new_job = request.form["jobTitle"]
-    helper.updateAccount(accountName, new_password, new_job)
+    helper.updateAccount(curs, accountName, new_password, new_job)
     flash("Your account has been updated")
-    rows = helper.getAccountReviews(accountName)
-    row = helper.getAccountInfo(accountName)
+    rows = helper.getAccountReviews(curs, accountName)
+    row = helper.getAccountInfo(curs, accountName)
     return render_template("account_display.html", accountName=accountName, reviews=rows, info=row)
      
 
 @app.route('/register', methods = ['POST', 'GET'])
 def register():
   if request.method == 'POST':
+    curs = helper.getConn().cursor(MySQLdb.cursors.DictCursor)
+
     account = request.form['accountName']
     password = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
     jobTitle = request.form['jobTitle']
@@ -133,7 +137,7 @@ def register():
     if len(resumeFile) > MAX_FILE_SIZE:
       return render_template('register.html')
     if account and password and jobTitle and identities:
-      curs = helper.getConn().cursor(MySQLdb.cursors.DictCursor)
+      # curs = helper.getConn().cursor(MySQLdb.cursors.DictCursor)
       curs.execute("select * from account where accountName = %s", (account,))
       row = curs.fetchall()
       if row:
@@ -148,7 +152,7 @@ def register():
           curs.execute("insert into identities values(%s, %s)", (identity, account))
         return redirect(url_for('displayAccount', accountName = account))
 
-  identities = helper.getIdentities()[0]['Type']
+  identities = helper.getIdentities(curs)[0]['Type']
   identities = re.sub('[(){}<>]', '', identities)
   identities = identities.replace('enum','').replace("'", '').split(',')
   return render_template('register.html', identities= identities)
