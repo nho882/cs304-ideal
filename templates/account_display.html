@@ -2,15 +2,16 @@
 {% block content %}
     <h1> Welcome, {{accountName}} </h1>
     <div>
-    <br><h5> Settings </h5>
+    <br><h4> Settings:</h4>
+    <h5> Enter a new password/job title and click update to update your information </h5>
     <div class="content">
       <a role="button" class="btn btn-primary btn-sm" href="{{url_for('displayResume', rFileName=accountName)}}">View Your Resume </a>
       <form method="POST" action="{{script}}">
           <div class="form-group">
             <br>
-            <label for='password'> Password: </label><input type="password" class="form-control" name="password" aria-describedby="password textbox" value="{{info['password']}}">
+            <label for='password'> Current Password: </label><input type="password" class="form-control" name="password" aria-describedby="password textbox" value="{{info['password']}}">
             <br>
-             <label for='jobTitle'> Job Title: </label><input type="text" class="form-control" name="jobTitle" aria-describedby="textbox" value="{{info['jobTitle']}}">
+             <label for='jobTitle'> Current Job Title: </label><input type="text" class="form-control" name="jobTitle" aria-describedby="textbox" value="{{info['jobTitle']}}">
             <br>
         <p><div style="margin: auto;">
             <button type="submit" class="btn btn-primary btn-block" >Update Account</button>
@@ -20,7 +21,7 @@
   </div>
   <br>
   <div>
-  <h5> See below for your most recent reviews.</h5>
+  <h4> See below for your most recent reviews.</h4>
   {% for review in reviews %} 
     <div class="content">
         <p> Company: {{review['companyName']}} </p>

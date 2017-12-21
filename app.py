@@ -1,4 +1,5 @@
 import os, sys, datetime, MySQLdb, dbconn2, helper, imghdr, re
+import bcrypt
 from flask import Flask, render_template, request, redirect, url_for, flash, make_response, session, jsonify
 from werkzeug import secure_filename
 app = Flask(__name__)
@@ -85,7 +86,7 @@ def signon():
     if row is None:
       flash("Sorry, we do not recognize this username and password.")
       return render_template('sign_on.html')
-    if row['password'] == password:
+    if bcrypt.checkpw(password.encode('utf-8'), row['password'].encode('utf-8')):
       flash("Successfully logged in.")
       session['logged_in'] = True
       session['user_name'] = account
@@ -105,17 +106,17 @@ def displayAccount(accountName):
       return render_template("account_display.html", accountName=accountName, reviews=rows, info=row)
     else:
       # No accountName specified 
-      #OR the user is attempting to look at an account that is not theirs.
+      # OR the user is attempting to look at an account that is not theirs.
       return redirect(url_for('searchBar'))
   # On updating account information
   elif request.method == 'POST':
     accountName = session["user_name"]
-    new_password = request.form["password"]
+    new_password = password = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
     new_job = request.form["jobTitle"]
     helper.updateAccount(accountName, new_password, new_job)
     flash("Your account has been updated")
-    rows = helper.getAccountReviews(new_user_name)
-    row = helper.getAccountInfo(new_user_name)
+    rows = helper.getAccountReviews(accountName)
+    row = helper.getAccountInfo(accountName)
     return render_template("account_display.html", accountName=accountName, reviews=rows, info=row)
      
 
@@ -123,7 +124,7 @@ def displayAccount(accountName):
 def register():
   if request.method == 'POST':
     account = request.form['accountName']
-    password = request.form['password']
+    password = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
     jobTitle = request.form['jobTitle']
     identities = request.form.getlist('identities')
     resume = request.files['resume']
@@ -201,8 +202,6 @@ def delete_review(account_name=None, reviewID=None):
   helper.deleteReview(reviewID)
   return redirect(url_for("displayAccount", accountName=account_name))
 
-    
-  
 if __name__ == '__main__':
     app.debug = True
     port = os.getuid()
