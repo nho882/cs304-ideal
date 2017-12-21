@@ -4,7 +4,9 @@ from flask import Flask, render_template, request, redirect, url_for, flash, mak
 from werkzeug import secure_filename
 app = Flask(__name__)
 app.secret_key = 'nancyhohoho'
-MAX_FILE_SIZE = 100000  
+MAX_FILE_SIZE = 1000000
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+FILE_TYPES = set(['pdf'])
 
 @app.route('/', methods=['POST','GET']) #Renders search page
 def searchBar():
@@ -132,10 +134,12 @@ def register():
     jobTitle = request.form['jobTitle']
     identities = request.form.getlist('identities')
     resume = request.files['resume']
+    resumeFileName = resume.filename
     resumeFile = resume.read()
 
     #Controlling for file size
-    if len(resumeFile) > MAX_FILE_SIZE:
+    if len(resumeFile) > MAX_FILE_SIZE or '.' not in resumeFileName or resumeFileName.rsplit('.', 1)[1] not in FILE_TYPES:
+      flash("File too big or invalid file type")
       return render_template('register.html')
     if account and password and jobTitle and identities:
       curs.execute("select * from account where accountName = %s", (account,))
@@ -168,9 +172,9 @@ def displayResume(rFileName=None):
   response.headers['Content-Disposition'] ='inline; filename=%s.pdf' % 'rFileName'
   return response
 
-@app.route('/<id>')
-def show_pdf(id):
-  return render_template('displayResume.html', doc_id=id)
+# @app.route('/<id>')
+# def show_pdf(id):
+#   return render_template('displayResume.html', doc_id=id)
 
 @app.route('/about/', methods = ['POST', 'GET'])
 def about():
