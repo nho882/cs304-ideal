@@ -126,6 +126,7 @@ def register():
     password = request.form['password']
     jobTitle = request.form['jobTitle']
     identities = request.form.getlist('identities')
+    resume = request.form['resume']
 
     if account and password and jobTitle and identities:
       curs = helper.getConn().cursor(MySQLdb.cursors.DictCursor)
@@ -138,7 +139,7 @@ def register():
         flash("Successfully created account!")
         session["user_name"] = account
         session["logged_in"] = True
-        curs.execute("insert into account values (%s, %s, %s, Null)", (account, password, jobTitle))
+        curs.execute("insert into account values (%s, %s, %s, %s)", (account, password, jobTitle, resume))
         for identity in identities:
           curs.execute("insert into identities values(%s, %s)", (identity, account))
         return redirect(url_for('displayAccount', accountName = account))
