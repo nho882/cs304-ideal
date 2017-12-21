@@ -158,6 +158,7 @@ def register():
 @app.route('/displayResume/<filename>', methods = ['GET'])
 def displayResume():
   account_name = request.args.get("account_name")
+  resume = helper.getFile(account_name)
 
 
 @app.route('/about/', methods = ['POST', 'GET'])
