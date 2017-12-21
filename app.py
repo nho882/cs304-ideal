@@ -152,6 +152,7 @@ def register():
           curs.execute("insert into identities values(%s, %s)", (identity, account))
         return redirect(url_for('displayAccount', accountName = account))
 
+  curs = helper.getConn().cursor(MySQLdb.cursors.DictCursor)
   identities = helper.getIdentities(curs)[0]['Type']
   identities = re.sub('[(){}<>]', '', identities)
   identities = identities.replace('enum','').replace("'", '').split(',')
