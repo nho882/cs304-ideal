@@ -42,6 +42,7 @@ def getIdentityReviews(identity):
   row = curs.fetchall()
   return row
 
+#This function is called in the same function as getAccountInfo and updateAccount, so they will share the same connection
 def getAccountReviews(curs, accountName):
   # curs = getConn().cursor(MySQLdb.cursors.DictCursor)
   curs.execute('SELECT * FROM reviews WHERE accountName = %s', (accountName,))

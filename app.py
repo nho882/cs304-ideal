@@ -15,15 +15,14 @@ def searchBar():
     identity = request.form['searchIdentity']
     tag = request.form['searchTags']
     
+    #Searches individually
     if company: #if nonempty, then fetch row from database
       curs.execute('select companyName from companies where companyName like %s', ('%'+company+'%',))
       row = curs.fetchone()
-      print row
       if row is not None: #Returns redirect if nonempty
         return redirect(url_for('display_company', company_name = row['companyName']))
       flash("Sorry, reviews for this company do not yet exist in IDeal.") #Flashes error if no such title
     elif identity:
-      print identity
       curs.execute('select identity from identities where identity like %s', ('%'+identity+'%',))
       row = curs.fetchone()
       if row is not None:
@@ -40,17 +39,16 @@ def searchBar():
 
 @app.route('/display-identity/<identity>', methods=['POST','GET'])
 def display_identity(identity):
-  # print "in the else"
   rows = helper.getIdentityReviews(identity)
-  # print rows
   return render_template("display-identity.html", identity=identity, info = rows)
 
-
+#Displays companies
 @app.route('/display-company/<company_name>', methods=['POST','GET'])
 def display_company(company_name):
   rows = helper.getCompanyReviews(company_name)
   return render_template("display.html", company=company_name, info = rows)
 
+#Displays terms
 @app.route('/display-term/<term>', methods=['POST','GET'])
 def display_term(term):
   rows = helper.getTermReviews(term)
@@ -60,11 +58,13 @@ def display_term(term):
 @app.route('/insert/', methods=['POST', 'GET'])
 def insert():
   if request.method == 'POST':
+    #Getting the fields from the form
     account = session['user_name']
     companyName = request.form['companyName']
     review = request.form['review']
     sentiment = request.form['sentiment']
     salary = request.form['salary']
+    #Inserting into the database
     helper.insertReview(account, companyName, review, sentiment, salary)
     flash("Thank you for submitting your review!")
     return render_template('insert.html')
@@ -134,10 +134,10 @@ def register():
     resume = request.files['resume']
     resumeFile = resume.read()
 
+    #Controlling for file size
     if len(resumeFile) > MAX_FILE_SIZE:
       return render_template('register.html')
     if account and password and jobTitle and identities:
-      # curs = helper.getConn().cursor(MySQLdb.cursors.DictCursor)
       curs.execute("select * from account where accountName = %s", (account,))
       row = curs.fetchall()
       if row:
@@ -158,10 +158,10 @@ def register():
   identities = identities.replace('enum','').replace("'", '').split(',')
   return render_template('register.html', identities= identities)
 
+#Displays file
 @app.route('/displayResume/', methods = ['GET'])
 def displayResume(rFileName=None):
   rFileName = request.args.get("rFileName")
-  print rFileName
   resume = helper.getFile(rFileName)
   response = make_response(resume)
   response.headers['Content-Type'] = 'application/pdf'
