@@ -126,7 +126,7 @@ def register():
     password = request.form['password']
     jobTitle = request.form['jobTitle']
     identities = request.form.getlist('identities')
-    resume = request.form['resume']
+    resume = request.files['resume']
 
     if account and password and jobTitle and identities:
       curs = helper.getConn().cursor(MySQLdb.cursors.DictCursor)
