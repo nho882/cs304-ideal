@@ -42,6 +42,7 @@ create table reviews (
 	salary int unsigned,
 	companyName varchar(20),
 	useful int unsigned  DEFAULT 0,
+	resume BLOB,
 	primary key (reviewID),
 	foreign key (accountName) references account(accountName) on delete restrict,
 	foreign key (companyName) references companies(companyName) on delete restrict
